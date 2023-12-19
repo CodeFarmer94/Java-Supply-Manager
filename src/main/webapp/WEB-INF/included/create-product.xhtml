@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<body>
+
+
+	<ui:composition
+		template="/WEB-INF/templates/map_datatable_template.xhtml">
+
+
+		<ui:param name="catalogBean" value="#{componentBean}" />
+		<ui:param name="mapBean" value="#{productBean}" />
+		<ui:param name="panel_header" value="Build your Product" />
+		<ui:param name="dt_header" value="Components Catalog" />
+
+		<ui:define name="top-content">
+
+			<!-- DIALOG PANEL -->
+			<p:panel id="create-panel" class="ui-fluid"
+				header="Enter Product Details"
+				style="display: flex; flex-direction: column; gap: 15px;">
+				<f:facet name="header">
+					<h:outputText value="Enter Product Details" class="header" />
+				</f:facet>
+
+				<!-- ___ INPUTS CAN BE INSERTED USING DEFINE IN THE TEMPLATE IMPLEMENTATION -->
+
+				<div class="field">
+					<p:outputLabel for="name" value="Name" />
+					<p:inputText id="name" value="#{productBean.name}" required="true" />
+				</div>
+
+
+				<div class="field">
+					<p:outputLabel for="price" value="Price" />
+					<p:inputNumber id="price" value="#{productBean.price}" symbol="$" required="true"
+						symbolPosition="s" decimalSeparator="," thousandSeparator="." />
+				</div>
+
+
+				<div class="field">
+					<p:outputLabel for="@next" value="Description" />
+					<p:inputTextarea rows="5" cols="30" counter="display"
+						maxlength="100" counterTemplate="{0} characters remaining."
+						autoResize="false" value="#{productBean.description}" />
+					<h:outputText id="display" class="block"
+						value="#{productBean.description}" />
+				</div>
+
+
+			</p:panel>
+
+
+		</ui:define>
+		<ui:define name="columns">
+
+
+			<p:column headerText="Name">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.name}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.name}" style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+			<p:column headerText="Price">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.price}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.price}" style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+
+			<p:column headerText="Code">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.code}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.code}" style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+			<p:column headerText="Supplier_Name">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.transactionParty.name}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.transactionParty.name}"
+							style="width:100%" disabled="true" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+
+		</ui:define>
+
+		<ui:define name="bottom-content">
+			<p:panel style="display:flex; flex-direction:column; gap:1rem" id="bottom-panel">
+
+				<f:facet name="header">
+					<h:outputText value="Product Summary" class="header" />
+				</f:facet>
+			
+				<div class="field">
+				<h:outputText
+					value="Total added items cost: $#{productBean.quantityMapService.getTotalCost()}" />
+				</div>
+				<div class="field">
+				<h:outputText
+					value="Total number of different components: #{productBean.quantityMapService.quantityMap.size()}"/>
+				</div>
+				<div class="field">
+				<h:outputText
+					value="Total number of components: #{productBean.quantityMapService.getTotalQuantities()}"/>
+				</div>
+
+				
+
+
+				<div
+					style="display: block; text-align: right !important; ">
+					<p:commandButton value="Reset" icon="fa fa-remove"
+						styleClass="ui-button-danger" 
+						oncomplete="updatePage()" style="margin-right:1rem" update="form"/>
+					<p:commandButton value="Create Product" icon="pi pi-check"
+						styleClass="ui-button-success" action="#{productBean.saveEntity}"
+						oncomplete="updatePage()" update="form" />
+				</div>
+				
+			</p:panel>
+
+		</ui:define>
+
+
+	</ui:composition>
+
+</body>
+</html>

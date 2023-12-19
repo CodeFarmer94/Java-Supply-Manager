@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<head>
+    <!-- Your head content goes here -->
+</head>
+<body>
+
+
+        <ui:composition template="/WEB-INF/templates/edit_datatable_template.xhtml">
+        <ui:param name="beanName" value="#{supplierBean}" />
+        
+        <ui:define name = "header">
+        Suppliers
+        </ui:define>
+       <ui:define name = "columns">				
+         		
+				<p:column headerText="Name">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.name}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item.name}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+			
+
+				<p:column headerText="Email">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.email}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item.email}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Phone">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.contactPhone}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item.contactPhone}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+
+				<p:column headerText="Street" >
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.address.street}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item.address.street}"
+								style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column headerText="City" >
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.address.city}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item.address.city}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column headerText="Zip Code" >
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.address.zipCode}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item.address.zipCode}"
+								style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column headerText="Country" >
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{item.address.country}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{item.address.country}"
+								style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<!--  -->
+	
+				
+      </ui:define>
+        
+        <ui:define name = "inputFields">
+        <!--  DIALOG FIELDS  -->
+				<div class="field">
+					<p:outputLabel for="name">Name</p:outputLabel>
+					<p:inputText id="name" value="#{supplierBean.name}" required="true" />
+				</div>
+				<div class="field">
+					<p:outputLabel for="@next" value="Phone" />
+					<p:inputMask id="phone" value="#{supplierBean.contactPhone}"
+						mask="(999) 999-9999" validateMask="true" />
+				</div>
+				<div class="field">
+					<p:outputLabel for="@next" value="Email" />
+					<p:inputText id="email" value="#{supplierBean.email}"
+						required="true" />
+				</div>
+				<div class="field">
+					<p:outputLabel for="@next" value="Street" />
+					<p:inputText id="street" value="#{supplierBean.street}"
+						required="true" />
+				</div>
+				<div class="field">
+					<p:outputLabel for="city" value="City" />
+					<p:inputText id="city" value="#{supplierBean.city}" required="true" />
+				</div>
+
+				<div class="field">
+					<p:outputLabel for="zipCode" value="Zip Code" />
+					<p:inputText id="zipCode" value="#{supplierBean.zipCode}"
+						required="true" />
+				</div>
+
+				<div class="field">
+					<p:outputLabel for="country" value="Country" />
+					<p:inputText id="country" value="#{supplierBean.country}"
+						required="true" />
+				</div>
+        </ui:define>
+        
+     
+    </ui:composition>
+
+</body>
+</html>

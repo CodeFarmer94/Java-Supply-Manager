@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<div class="card">
+
+		<h:form id="form">
+		
+			<!-- CATCHING FACE MESSAGES -->
+			<p:growl id="messages" showDetail="true" />
+<!-- page1.xhtml -->
+
+
+			<!--  CREATE NEW SUPPLIER BUTTON -->
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="New" icon="pi pi-plus"
+						styleClass="ui-button-success" style="margin-right: .5rem"
+						onclick="PF('createDialog').show()">
+						<p:resetInput target=":dialogs:create-panel" />
+					</p:commandButton>
+				
+
+					<!--  DELETE SELECTED SUPPLIERS  -->
+					<p:commandButton id="delete-button" icon="pi pi-trash"
+						action="#{supplierBean.deleteSelectedEntities}"
+						value="#{supplierBean.deleteButtonMessage}"
+						styleClass="ui-button-danger"
+						update="form:messages form:datatable"
+						disabled="#{!supplierBean.hasSelected()}">
+					</p:commandButton>
+					
+				</p:toolbarGroup>
+			</p:toolbar>
+			
+			
+<p:toolbar style="padding: 10px; background-color: #f2f2f2;">
+    <!-- Left side: Sort Dropdown and Sort Order Buttons -->
+    <p:toolbarGroup align="left">
+        <h:outputLabel value="Sort by: " style="margin-right: 5px;" />
+        <p:selectOneMenu id="sortColumnDropdown" value="#{supplierBean.sortBean.selectedSortColumn}">
+            <f:selectItem itemLabel="Select" itemValue="" noSelection="true" />
+            <f:selectItem itemLabel="ID" itemValue="id" />
+            <f:selectItem itemLabel="Name" itemValue="name" />
+            <f:selectItem itemLabel="Email" itemValue="email" />
+            <p:ajax event="change" listener="#{supplierBean.sort}" />
+        </p:selectOneMenu>
+
+        <h:outputLabel value="Order: " style="margin: 0px 5px;" />
+        <p:selectOneButton value="#{supplierBean.sortBean.selectedSortOrder}">
+            <f:selectItem itemLabel="ASC" itemValue="ASC" disabled="#{supplierBean.sortBean.selectedSortColumn eq null}" />
+            <f:selectItem itemLabel="DESC" itemValue="DESC" disabled="#{supplierBean.sortBean.selectedSortColumn eq null}" />
+            <p:ajax event="change" listener="#{supplierBean.sort}" />
+        </p:selectOneButton>
+    </p:toolbarGroup>
+
+    <!-- Right side: Filter Dropdown, Filter Input, and Search Button -->
+    <p:toolbarGroup align="right">
+        <h:outputLabel value="Filter by: " style="margin-right: 5px;" />
+        <p:selectOneMenu value="#{supplierBean.filterBean.selectedFilterColumn}">
+            <f:selectItem itemLabel="Select" itemValue="" noSelection="true" />
+            <f:selectItem itemLabel="ID" itemValue="id" />
+            <f:selectItem itemLabel="Name" itemValue="name" />
+            <f:selectItem itemLabel="Email" itemValue="email" />
+        </p:selectOneMenu>
+
+        <p:inputText value="#{supplierBean.filterBean.selectedFilterValue}">
+            <p:ajax event="keyup" listener="#{supplierBean.filter}" />
+        </p:inputText>
+
+        <p:commandButton value="Search" action="#{supplierBean.filter}" styleClass="ui-button-info" />
+    </p:toolbarGroup>
+</p:toolbar>
+
+            
+
+			<!--  SUPPLIERS DATA TABLE -->
+			<p:dataTable var="supplier" value="#{supplierBean.entityList}"
+				id="datatable" showGridlines="true"
+				selection="#{supplierBean.selectedEntityList}" rowSelectMode="add"
+				rowKey="#{supplier.id}" editable="true">
+				
+			<!--  AJAX EVENTS  -->
+			
+				<p:ajax event="rowSelect" update=":form:delete-button" />
+				<p:ajax event="rowUnselect" update=":form:delete-button" />
+				<p:ajax event="rowEdit" listener="#{supplierBean.editRowBean.onRowEdit}"
+					update=":form:messages" />
+				<p:ajax event="rowEditCancel" listener="#{supplierBean.editRowBean.onRowCancel}"
+					update=":form:messages" />
+			
+			
+			<!--  TABLE HEADER FACET -->
+				<f:facet name="header">
+                List of Suppliers
+           		 </f:facet>
+           		 
+			<!--  TABLE COLUMNS  -->
+			
+				<p:column headerText="ID">
+					<h:outputText value="#{supplier.id}" />
+				</p:column>
+			
+			
+				<p:column headerText="Name">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{supplier.name}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{supplier.name}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+			
+
+				<p:column headerText="Email">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{supplier.email}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{supplier.email}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Phone">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{supplier.contactPhone}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{supplier.contactPhone}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+
+				<p:column headerText="Street" >
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{supplier.address.street}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{supplier.address.street}"
+								style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column headerText="City" >
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{supplier.address.city}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{supplier.address.city}" style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column headerText="Zip Code" >
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{supplier.address.zipCode}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{supplier.address.zipCode}"
+								style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column headerText="Country" >
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{supplier.address.country}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{supplier.address.country}"
+								style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<!--  ROW EDITOR COLUMN -->
+				<p:column>
+					<p:rowEditor />
+				</p:column>
+				
+			</p:dataTable>
+		</h:form>
+	</div>
+
+
+	<!--  MANAGE  DIALOG -->
+	<h:form id="dialogs">
+		<p:dialog header="Supplier Details" showEffect="fade" modal="true"
+			widgetVar="createDialog" responsive="true">
+			
+			<!--  DIALOG PANEL -->
+			<p:outputPanel id="create-panel" class="ui-fluid"
+				style="display: flex; flex-direction: column; gap: 15px;">
+				
+				<!--  DIALOG FIELDS  -->
+				<div class="field">
+					<p:outputLabel for="name">Name</p:outputLabel>
+					<p:inputText id="name" value="#{supplierBean.name}" required="true" />
+				</div>
+				<div class="field">
+					<p:outputLabel for="@next" value="Phone" />
+					<p:inputMask id="phone" value="#{supplierBean.contactPhone}"
+						mask="(999) 999-9999" validateMask="true" />
+				</div>
+				<div class="field">
+					<p:outputLabel for="@next" value="Email" />
+					<p:inputText id="email" value="#{supplierBean.email}"
+						required="true" />
+				</div>
+				<div class="field">
+					<p:outputLabel for="@next" value="Street" />
+					<p:inputText id="street" value="#{supplierBean.street}"
+						required="true" />
+				</div>
+				<div class="field">
+					<p:outputLabel for="city" value="City" />
+					<p:inputText id="city" value="#{supplierBean.city}" required="true" />
+				</div>
+
+				<div class="field">
+					<p:outputLabel for="zipCode" value="Zip Code" />
+					<p:inputText id="zipCode" value="#{supplierBean.zipCode}"
+						required="true" />
+				</div>
+
+				<div class="field">
+					<p:outputLabel for="country" value="Country" />
+					<p:inputText id="country" value="#{supplierBean.country}"
+						required="true" />
+				</div>
+			</p:outputPanel>
+
+
+
+			<!--  DIALOG FOOTER  -->
+			<f:facet name="footer">
+				<p:commandButton value="Save" icon="pi pi-check"
+					action="#{supplierBean.registerSupplier}"
+					update="form:messages form:datatable" />
+				<p:commandButton value="Reset" update="create-panel"
+					process="@this" styleClass="mr-2 ui-button-outlined">
+					<p:resetInput target="supplier-panel" />
+				</p:commandButton>
+				<p:commandButton value="Cancel" icon="pi pi-times"
+					onclick="PF('createDialog').hide()"
+					class="ui-button-secondary" type="button" />
+			</f:facet>
+		</p:dialog>
+	</h:form>
+
+</h:body>
+
+</html>
+

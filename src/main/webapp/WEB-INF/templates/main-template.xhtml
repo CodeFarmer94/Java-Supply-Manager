@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+
+	<style>
+.icon {
+	vertical-align: top;
+	margin-right: 1rem;
+}
+
+.field {
+	margin-bottom: 20px; /* Adjust the value as needed */
+}
+.field > * {
+    /* Your styles for all children of elements with class .field go here */
+    /* For example: */
+   margin-bottom:0.5rem ;
+}
+
+.header {
+	font-size:1.5rem;
+	font-weight:bold;
+}
+
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+</h:head>
+
+<h:body>
+	<div class="card">
+
+		<p:splitter style="min-height: 100vh" styleClass="mb-5">
+			<p:splitterPanel
+				styleClass="flex align-items-center justify-content-center"
+				size="20">
+				<div class="card">
+					<h:form>
+						<p:growl>
+							<p:autoUpdate />
+						</p:growl>
+
+						<p:panelMenu>
+							<p:submenu label="Task Manager">
+
+								<p:menuitem value="Balance Manager"
+									outcome="/manager_pages/balance-manager" 
+									icon="pi pi-dollar icon" />
+								<p:menuitem value="Inventory Manager" 
+								icon="pi pi-book icon"  outcome="/manager_pages/component-manager" />
+								<p:menuitem value="Order Manager"
+								icon="pi pi-box icon" outcome="/manager_pages/order-manager"/>
+								<p:menuitem value="Create Entity"
+								icon="fa fa-gear icon" outcome="/manager_pages/create-entity"/>
+								
+							</p:submenu>
+							<p:submenu label="Datatables">
+
+								<p:menuitem value="Component Data"
+									outcome="/dt_pages/component_dt_page" icon="pi pi-table"
+									/>
+								<p:menuitem value="Product Data"
+									outcome="/dt_pages/product_dt_page" icon="pi pi-slack"
+									 />
+								<p:menuitem value="Customer Data"
+									outcome="/dt_pages/customer_dt_page" icon="pi pi-user"
+									 />
+								<p:menuitem value="Supplier Data"
+									outcome="/dt_pages/supplier_dt_page" icon="pi pi-truck"
+									/>
+
+							</p:submenu>
+						</p:panelMenu>
+					</h:form>
+				</div>
+			</p:splitterPanel>
+			<p:splitterPanel
+				styleClass="flex align-items-center justify-content-center"
+				size="80">
+				<ui:insert name="right-panel" />
+			</p:splitterPanel>
+		</p:splitter>
+	</div>
+
+
+</h:body>
+</html>

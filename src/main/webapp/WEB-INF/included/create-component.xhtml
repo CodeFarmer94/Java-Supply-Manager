@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+	<div>
+		
+		<h:form id="component-form">
+
+			<div class="card">
+				<p:growl id="messages" showDetail="true" />
+				<!-- DIALOG PANEL -->
+				<p:panel id="create-panel" class="ui-fluid"
+					style="display: flex; flex-direction: column; gap: 15px;">
+					<f:facet name="header">
+						<h:outputText value="Enter Component Details" class="header" />
+					</f:facet>
+
+
+					<div class="field">
+						<p:outputLabel for="name" value="Name" />
+						<p:inputText id="name" value="#{componentBean.name}"
+							required="true" />
+					</div>
+
+
+					<div class="field">
+						<p:outputLabel for="price" value="Price" />
+						<p:inputNumber id="price" value="#{componentBean.price}"
+							symbol="$" symbolPosition="s" decimalSeparator=","
+							thousandSeparator="." />
+					</div>
+
+
+					<div class="field">
+						<p:outputLabel for="@next" value="Description" />
+						<p:inputTextarea rows="5" cols="30" counter="display"
+							maxlength="100" counterTemplate="{0} characters remaining."
+							autoResize="false" value="#{componentBean.description}" />
+						<h:outputText id="display" class="block"
+							value="#{componentBean.description}" />
+					</div>
+
+
+					<div class="field">
+						<p:outputLabel for="@next" value="Select a supplier" class="header"/>
+						<p:selectOneMenu id="advanced"
+							value="#{componentBean.selectedSupplier}"
+							panelStyle="width:180px" var="c" converter="supplierConverter"
+							filter="true" filterMatchMode="contains" filterNormalize="true">
+							<f:selectItems value="#{supplierBean.entityList}" var="supplier"
+								itemValue="#{supplier}" itemLabel="#{supplier.name}" />
+								
+								
+							<p:column style="width:10%">
+								<h:outputText value="#{c.id}" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{c.name}" />
+							</p:column>
+
+							<f:facet name="footer">
+								<h:outputText
+									value="#{supplierBean.entityList.size()} Suppliers Found..."
+									style="font-weight:bold;" styleClass="py-1 block" />
+							</f:facet>
+						</p:selectOneMenu>
+					</div>
+					
+
+				</p:panel>
+				<p:panel style="display:flex; flex-direction:column; gap:1rem">
+
+
+					<div style="display: block; text-align: right !important;">
+						<p:commandButton value="Reset" icon="fa fa-remove" width="auto"
+							styleClass="ui-button-danger" update="component-form"
+							style="margin-right:1rem" />
+						<p:commandButton value="Create Product" icon="pi pi-check"
+							styleClass="ui-button-success"
+							action="#{componentBean.saveEntity}" update="component-form" />
+					</div>
+
+				</p:panel>
+
+			</div>
+		</h:form>
+
+	</div>
+</h:body>
+</html>

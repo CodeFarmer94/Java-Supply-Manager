@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">>
+
+<f:view>
+  <f:metadata>
+                <!-- Example: Assuming you have a Product entityInstance -->
+                <f:viewParam name="id" value="#{productBean.entityIdParam}" />
+                <f:viewAction action="#{productBean.findByIdParam}" />
+            </f:metadata>
+   <ui:composition template="/WEB-INF/templates/main-template.xhtml">
+   <ui:define name="right-panel">
+ 
+
+    <h:body>
+        <h:form>
+            <h2>Product Details</h2>
+            
+          
+            
+            <h:panelGrid rendered="#{not empty productBean.entityInstance}">
+                <!-- Display specific details of the entityInstance -->
+                <!-- For example, if it's a Product entityInstance: -->
+                <h:outputText value="Product Name: #{productBean.entityInstance.name}" />
+                <h:outputText value="Description: #{productBean.entityInstance.description}" />
+            </h:panelGrid>
+            
+            <h:messages />
+        </h:form>
+       
+    </h:body>
+    </ui:define>
+    </ui:composition>
+</f:view>
+
+</html>
