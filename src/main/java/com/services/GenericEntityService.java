@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import com.dao.GenericDAO;
-
+import com.interfaces.EntityInterface;
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -14,18 +14,19 @@ import jakarta.transaction.Transactional;
 
 @Transactional
 @Stateless
-public class GenericEntityService<T> {
+public class GenericEntityService<T extends EntityInterface> {
 	
 	
     @Inject
     private  GenericDAO<T> genericDAO;
     
-  
+    
     
     /* -------- POST ------------*/
 
     public void save( T entity) {
         genericDAO.save(entity);
+        
     }
     
     
@@ -85,16 +86,9 @@ public class GenericEntityService<T> {
     }
     
     
-    /* -------- GETTERS AND SETTERS ----- */
-    
-    public GenericDAO<T> getGenericDAO() {
-		return genericDAO;
-	}
 
 
-	public void setGenericDAO(GenericDAO<T> genericDAO) {
-		this.genericDAO = genericDAO;
-	}
+
 
     
 }

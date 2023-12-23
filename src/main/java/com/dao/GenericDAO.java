@@ -3,6 +3,7 @@ package com.dao;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.interfaces.EntityInterface;
 import com.validators.ObjValidator;
 
 import jakarta.inject.Inject;
@@ -18,15 +19,8 @@ import jakarta.transaction.Transactional;
  * @param <T> The type of entity managed by the DAO.
  */
 @Transactional
-public class GenericDAO<T> {
+public class GenericDAO<T extends EntityInterface> {
 
-    public EntityManager getEm() {
-		return em;
-	}
-
-	public void setEm(EntityManager em) {
-		this.em = em;
-	}
 
 	@PersistenceContext
     private EntityManager em;
@@ -42,6 +36,8 @@ public class GenericDAO<T> {
      *
      */
     public void save(T entity) {
+    	
+    	logger.info("Saving entity ID: " + entity.getId());
         validator.validateObj(entity);
         em.persist(entity);
         logger.info(entity.getClass().getSimpleName() + " saved");
@@ -94,14 +90,12 @@ public class GenericDAO<T> {
  
      */
     public List<T> findByValue(Class<T> entityClass, String columnName, Object value) {
+    	
         String queryString = "SELECT e FROM " + entityClass.getSimpleName() + " e";
-
         if (columnName != null && !columnName.isEmpty() && value != null) {
             queryString += " WHERE LOWER(e." + columnName + ") LIKE :value";
         }
-
         TypedQuery<T> query = em.createQuery(queryString, entityClass);
-
         if (value != null) {
             query.setParameter("value", "%" + value.toString().toLowerCase() + "%");
         }

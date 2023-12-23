@@ -20,7 +20,7 @@ import jakarta.persistence.JoinColumn;
 
 
 @Entity
-public class Shipment implements Serializable {
+public class Shipment extends EntityImpl implements Serializable {
 
 
 	private static final long serialVersionUID = 1L;
@@ -28,10 +28,7 @@ public class Shipment implements Serializable {
 	
 	/*----------  Entity Column fields --------*/
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	
+
 	/* Many shipments can belong to a customer */
 	@NotNull
 	@ManyToOne

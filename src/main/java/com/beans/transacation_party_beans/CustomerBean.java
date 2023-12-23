@@ -63,9 +63,7 @@ public class CustomerBean extends GenericDataTableBean<Customer>{
 		        /* UPDATING THE LIST AND THE VIEW */
 		        
 		        this.entityList = entityService.findAll(entityClass); // Update the list
-		        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Supplier Registered"));
-		        PrimeFaces.current().executeScript("PF('createDialog').hide()");
-		        PrimeFaces.current().ajax().update("form:datatable");
+		        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Customer Registered"));
 
 		        this.resetFields();
 

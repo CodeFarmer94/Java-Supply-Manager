@@ -74,14 +74,9 @@ public class SupplierBean extends GenericDataTableBean<Supplier>{
 	    	Address address = new Address(street, city, zipCode, country);
 	    	Supplier supplier = new Supplier(name, address, contactPhone, email);
 	        entityService.save( supplier );
-	        
-	        /* UPDATING THE LIST AND THE VIEW */
-	        
-	        this.entityList = entityService.findAll(entityClass); // Update the list
 	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Supplier Registered"));
-	        PrimeFaces.current().executeScript("PF('createDialog').hide()");
-	        PrimeFaces.current().ajax().update("form:datatable");
-
+	       
+	        this.refreshEntityList();
 	        this.resetFields();
 
 	     

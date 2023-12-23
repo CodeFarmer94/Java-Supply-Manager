@@ -44,10 +44,6 @@ public  class SortingItemBean<T extends ItemInterface> implements Serializable {
                 cmp = Comparator.comparing(ItemInterface::getPrice);
                 break;
             }
-            case "quantity": {
-                cmp = Comparator.comparing(ItemInterface::getQuantity);
-                break;
-            }
             case "party_id": {
 				cmp = Comparator.comparing( e -> e.getTransactionParty().getId());
 				break;

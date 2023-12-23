@@ -1,10 +1,11 @@
 package com.beans;
 
+import com.interfaces.EntityInterface;
 import com.services.GenericEntityService;
 
 import jakarta.inject.Inject;
 
-public class GenericDetailsBean<T> {
+public class GenericDetailsBean<T extends EntityInterface> {
 
 	
 	@Inject 
@@ -18,6 +19,7 @@ public class GenericDetailsBean<T> {
 	public void fetchEntity() {
 		
 		this.entity = entityService.findById(entityClass, Long.valueOf(entityId));
+		
 	}
 
 	

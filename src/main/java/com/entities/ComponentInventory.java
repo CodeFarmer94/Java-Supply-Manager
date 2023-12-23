@@ -1,6 +1,11 @@
 package com.entities;
 
 
+import com.beans.GenericDataTableBean;
+import com.interfaces.EntityInterface;
+import com.interfaces.ItemInterface;
+import com.interfaces.TransactionParty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
@@ -10,25 +15,33 @@ import jakarta.validation.constraints.NotNull;
  *
  */
 @Entity
-public class ComponentInventory extends EntityImpl {
+public class ComponentInventory extends EntityImpl implements ItemInterface{
 
 	
 	private static final long serialVersionUID = 1L;
+	
+	
 
 	@OneToOne
 	private Component component;
+
 	
-	@NotNull
 	private int quantity;
 	
 	
 	
-	public ComponentInventory(Component component, @NotNull int quantity) {
+	public ComponentInventory(Component component,  int quantity) {
 		super();
 		this.component = component;
 		this.quantity = quantity;
 	}
 
+	
+	public double getValue() {
+		return component.getPrice() * quantity;
+	}
+	
+	
 	public Component getComponent() {
 		return component;
 	}
@@ -49,7 +62,23 @@ public class ComponentInventory extends EntityImpl {
 		this.quantity = quantity;
 	}
 
+	@Override
+	public String getName() {
+		return component.getName();
+	}
 
+	@Override
+	public double getPrice() {
+		// TODO Auto-generated method stub
+		return component.getPrice();
+	}
+
+	@Override
+	public TransactionParty getTransactionParty() {
+		return component.getTransactionParty();
+	}
+
+	
 
 
 }

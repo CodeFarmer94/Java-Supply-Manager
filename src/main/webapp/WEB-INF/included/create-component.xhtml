@@ -16,7 +16,7 @@
 				<p:panel id="create-panel" class="ui-fluid"
 					style="display: flex; flex-direction: column; gap: 15px;">
 					<f:facet name="header">
-						<h:outputText value="Enter Component Details" class="header" />
+						<h:outputText value="Enter Component Details" class="h1" />
 					</f:facet>
 
 
@@ -48,9 +48,10 @@
 					<div class="field">
 						<p:outputLabel for="@next" value="Select a supplier" class="header"/>
 						<p:selectOneMenu id="advanced"
-							value="#{componentBean.selectedSupplier}"
+							value="#{componentBean.selectedSupplier}" 
 							panelStyle="width:180px" var="c" converter="supplierConverter"
 							filter="true" filterMatchMode="contains" filterNormalize="true">
+					
 							<f:selectItems value="#{supplierBean.entityList}" var="supplier"
 								itemValue="#{supplier}" itemLabel="#{supplier.name}" />
 								
@@ -80,7 +81,7 @@
 						<p:commandButton value="Reset" icon="fa fa-remove" width="auto"
 							styleClass="ui-button-danger" update="component-form"
 							style="margin-right:1rem" />
-						<p:commandButton value="Create Product" icon="pi pi-check"
+						<p:commandButton value="Create Component" icon="pi pi-check"
 							styleClass="ui-button-success"
 							action="#{componentBean.saveEntity}" update="component-form" />
 					</div>

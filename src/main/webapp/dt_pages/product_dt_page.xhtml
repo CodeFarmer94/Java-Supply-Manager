@@ -14,7 +14,7 @@
 
 	<ui:composition template="/WEB-INF/templates/edit_datatable_template.xhtml">
 
-
+		<ui:param name="selectedTab" value="0" />
 		<ui:param name="beanName" value="#{productBean}" />
 		<ui:define name="header">
         	Product
@@ -34,16 +34,18 @@
 			</p:column>
 
 
-			<p:column headerText="Price">
-				<p:cellEditor>
-					<f:facet name="output">
-						<h:outputText value="#{item.price}" />
-					</f:facet>
-					<f:facet name="input">
-						<p:inputText value="#{item.price}" style="width:100%" />
-					</f:facet>
-				</p:cellEditor>
-			</p:column>
+		
+				<p:column headerText="Price">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="$ #{item.price}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputNumber value="#{item.price}" symbol="$" required="true"
+						symbolPosition="s" decimalSeparator="," thousandSeparator="." />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
 
 		
 

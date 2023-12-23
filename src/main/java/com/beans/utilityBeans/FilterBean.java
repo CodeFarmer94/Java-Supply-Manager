@@ -4,13 +4,14 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.interfaces.EntityInterface;
 import com.services.GenericEntityService;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 @Named
-public class FilterBean <T> implements Serializable{
+public class FilterBean <T extends EntityInterface> implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	

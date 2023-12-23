@@ -76,9 +76,6 @@ public class Component extends ItemBase implements EntityInterface, ItemInterfac
 		this.invoiceList = invoiceList;
 	}
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
 
 	public Supplier getTransactionParty() {
 		return transactionParty;

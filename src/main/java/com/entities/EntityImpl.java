@@ -10,15 +10,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
-/**
- * Entity implementation class for Entity: EntityImpl
- *
- */
+
 @MappedSuperclass
 
-public class EntityImpl implements Serializable, EntityInterface {
+public abstract class  EntityImpl implements Serializable, EntityInterface {
 
-	
+
 	private static final long serialVersionUID = 1L;
 
 

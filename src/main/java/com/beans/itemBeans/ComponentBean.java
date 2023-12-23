@@ -71,6 +71,8 @@ public class ComponentBean extends GenericDataTableBean<Component>{
 		try {	
 			/* Save component with supplier foreign key */
 			entityService.save(new Component(name, price, description, selectedSupplier));
+	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Component Registered"));
+
 	        this.refreshEntityList();
 	        this.resetFields();
 	     
@@ -83,6 +85,11 @@ public class ComponentBean extends GenericDataTableBean<Component>{
 	    } catch (Exception e) {
 	    	e.printStackTrace();
 	    }
+	}
+	 
+	public void handleCreateEntity() {
+		entityService.save(new Component(name, price, description, selectedSupplier));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Component Registered"));
 	}
 	
 

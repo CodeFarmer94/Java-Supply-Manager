@@ -31,6 +31,9 @@ public class SupplierConverter implements Converter<Object> {
 
     @Override
     public String getAsString(FacesContext fc, UIComponent comp, Object value) {
+    	if(value == "") {
+    		return null;
+    	}
         System.out.println("Converting to String");
         try {
             return String.valueOf(((Supplier) value).getId());

@@ -7,115 +7,130 @@
 
 <h:body>
 	<div>
-		
-			<p:remoteCommand name="updatePage" process="@this" update="form" />
+
+		<p:remoteCommand name="updateAddRemove" process="@this"
+			update="form:side-panel form:datatable" />
 		<h:form id="form">
-	
+
 			<div class="card">
 				<p:growl id="messages" showDetail="true" />
 				<ui:insert name="top-content" />
-				<p:panel>
-					<f:facet name="header">
-						<h:outputText value="#{panel_header}" class="header" />
-
-					</f:facet>
-
-					<p:toolbar>
-						<!-- Left side: Sort Dropdown and Sort Order Buttons -->
-						<p:toolbarGroup align="left" style="display:flex; gap:1rem;">
-							<h:outputLabel value="Sort by: " style="margin-right: 5px;" />
-							<p:selectOneMenu id="sortColumnDropdown"
-								value="#{catalogBean.sortBean.selectedSortColumn}">
-								<f:selectItems value="#{catalogBean.sortOptions}" />
-								<p:ajax event="change" listener="#{catalogBean.sort}"
-									oncomplete="updatePage()" />
-							</p:selectOneMenu>
-
-							<h:outputLabel value="Order: " style="margin: 0px 5px;" />
-							<p:selectOneButton
-								value="#{catalogBean.sortBean.selectedSortOrder}">
-								<f:selectItem itemLabel="ASC" itemValue="ASC"
-									style="height:0.5rem;" />
-								<f:selectItem itemLabel="DESC" itemValue="DESC" />
-								<p:ajax event="change" listener="#{catalogBean.sort}"
-									oncomplete="updatePage()" />
-							</p:selectOneButton>
-						</p:toolbarGroup>
 
 
-						<!-- Right side: Filter Dropdown, Filter Input, and Search Button -->
-						<p:toolbarGroup align="right">
-							<h:outputLabel value="Filter by: " style="margin-right: 5px;" />
-							<p:selectOneMenu
-								value="#{catalogBean.filterBean.selectedFilterColumn}">
-								<f:selectItems value="#{catalogBean.filterOptions}" />
-							</p:selectOneMenu>
+				<p:splitter style="height: auto" styleClass="mb-5">
+					<p:splitterPanel
+						styleClass="flex align-items-center justify-content-center"
+						size="75">
+						<p:panel>
+							<f:facet name="header">
+								<h:outputText value="#{panel_header}" class="h1" />
 
-							<p:inputText
-								value="#{catalogBean.filterBean.selectedFilterValue}">
-								<p:ajax event="keyup" listener="#{catalogBean.filter}"
-									oncomplete="updatePage()" />
-							</p:inputText>
-
-							<p:commandButton value="Filter" action="#{catalogBean.filter}"
-								styleClass="ui-button-info" />
-						</p:toolbarGroup>
-					</p:toolbar>
-
-					<!-- entityS DATA TABLE -->
-					<p:dataTable var="item"
-						value="#{mapBean.quantityMapService.showAdded ? mapBean.quantityMapService.quantityMap.keySet() : catalogBean.entityList}"
-						id="datatable" showGridlines="false" paginator="true" rows="6"
-						paginatorPosition="bottom">
-						<f:facet name="header">
-							<div
-								style="display: flex; justify-content: space-between; align-items: center;">
-								<h:outputText value="#{dt_header}" />
-								<!--  -->
-								<p:commandButton
-									value="#{mapBean.quantityMapService.showAdded ? 'Show Full Catalog' : 'Show Only Added'}"
-									styleClass="ui-button-primary" icon="pi pi-cart-plus"
-									style="margin-right: 0.5rem;"
-									action="#{mapBean.quantityMapService.toggleShowAdded()}"
-									update="datatable"
-									ajax="true"
-									process="@this" />
-
-							</div>
-						</f:facet>
-
-						<!-- TABLE COLUMNS -->
-						<p:column headerText="ID">
-							<h:outputText value="#{item.id}" />
-						</p:column>
-						<ui:insert name="columns" />
-						<p:column headetText="Quantity">
-							<div
-								style="display: flex; gap: 0.8rem; justify-content: center; align-items: center">
-								<p:commandButton icon="fa fa-plus"
-									action="#{mapBean.quantityMapService.addToCart(item)}" update="selectedQuantity bottom-panel"
-									ajax="true" process="@this" >
-								</p:commandButton>
-								<h:outputText
-									value="#{mapBean.quantityMapService.getItemQuantity(item)}"
-									style="font-weight:bold; font-size:1.5rem" id="selectedQuantity"/>
-								<p:commandButton icon="fa fa-minus"
-									disabled="#{!mapBean.quantityMapService.isItemAdded(item)}"
-									action="#{mapBean.quantityMapService.removeFromCart(item)}" update="selectedQuantity bottom-panel"
-								 styleClass="ui-button-warning" ajax="true" process="@this">
-								</p:commandButton>
-								
-							</div>
-						</p:column>
+							</f:facet>
 
 
+							<p:toolbar>
+								<!-- Left side: Sort Dropdown and Sort Order Buttons -->
+								<p:toolbarGroup align="left" style="display:flex; gap:1rem;">
+									<h:outputLabel value="Sort by: " style="margin-right: 5px;" />
+									<p:selectOneMenu id="sortColumnDropdown"
+										value="#{catalogBean.sortBean.selectedSortColumn}">
+										<f:selectItems value="#{catalogBean.sortOptions}" />
+										<p:ajax event="change" listener="#{catalogBean.sort}"
+											oncomplete="updatePage()" />
+									</p:selectOneMenu>
+
+									<h:outputLabel value="Order: " style="margin: 0px 5px;" />
+									<p:selectOneButton
+										value="#{catalogBean.sortBean.selectedSortOrder}">
+										<f:selectItem itemLabel="ASC" itemValue="ASC"
+											style="height:0.5rem;" />
+										<f:selectItem itemLabel="DESC" itemValue="DESC" />
+										<p:ajax event="change" listener="#{catalogBean.sort}"
+											oncomplete="updatePage()" />
+									</p:selectOneButton>
+								</p:toolbarGroup>
 
 
-					</p:dataTable>
+								<!-- Right side: Filter Dropdown, Filter Input, and Search Button -->
+								<p:toolbarGroup align="right">
+									<h:outputLabel value="Filter by: " style="margin-right: 5px;" />
+									<p:selectOneMenu
+										value="#{catalogBean.filterBean.selectedFilterColumn}">
+										<f:selectItems value="#{catalogBean.filterOptions}" />
+									</p:selectOneMenu>
 
-				</p:panel>
-				<ui:insert name="bottom-content" />
+									<p:inputText
+										value="#{catalogBean.filterBean.selectedFilterValue}">
+										<p:ajax event="keyup" listener="#{catalogBean.filter}"
+											oncomplete="updatePage()" />
+									</p:inputText>
 
+									<p:commandButton value="Filter" action="#{catalogBean.filter}"
+										styleClass="ui-button-info" />
+								</p:toolbarGroup>
+							</p:toolbar>
+
+							<!-- entityS DATA TABLE -->
+							<p:dataTable var="item"
+								value="#{mapBean.quantityMapService.showAdded ? mapBean.quantityMapService.quantityMap.keySet() : catalogBean.entityList}"
+								id="datatable" showGridlines="false" paginator="true" rows="6"
+								paginatorPosition="bottom">
+								<f:facet name="header">
+									<div
+										style="display: flex; justify-content: space-between; align-items: center;">
+										<h:outputText value="#{dt_header}" />
+										<!--  -->
+										<p:commandButton
+											value="#{mapBean.quantityMapService.showAdded ? 'Show Full Catalog' : 'Show Only Added'}"
+											styleClass="ui-button-primary" icon="pi pi-cart-plus"
+											style="margin-right: 0.5rem;"
+											action="#{mapBean.quantityMapService.toggleShowAdded()}"
+											update="datatable" ajax="true" process="@this" />
+
+									</div>
+								</f:facet>
+
+								<!-- TABLE COLUMNS -->
+								<p:column headerText="ID">
+									<h:outputText value="#{item.id}" />
+								</p:column>
+								<ui:insert name="columns" />
+								<p:column headetText="Quantity">
+									<div
+										style="display: flex; gap: 0.8rem; justify-content: center; align-items: center">
+										<p:commandButton icon="fa fa-plus"
+											action="#{mapBean.quantityMapService.addToCart(item)}"
+											oncomplete="updateAddRemove()" ajax="true" process="@this">
+										</p:commandButton>
+										<h:outputText
+											value="#{mapBean.quantityMapService.getItemQuantity(item)}"
+											style="font-weight:bold; font-size:1.5rem"
+											id="selectedQuantity" />
+										<p:commandButton icon="fa fa-minus"
+											disabled="#{!mapBean.quantityMapService.isItemAdded(item)}"
+											action="#{mapBean.quantityMapService.removeFromCart(item)}"
+											oncomplete="updateAddRemove()" styleClass="ui-button-warning"
+											ajax="true" process="@this">
+										</p:commandButton>
+
+									</div>
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+					</p:splitterPanel>
+					
+					
+					<p:splitterPanel
+						styleClass="flex align-items-center justify-content-center"
+						size="25">
+						<ui:insert name="side-content" id="side-content" />
+					</p:splitterPanel>
+				</p:splitter>
+
+
+				<div id="bottom-insert">
+					<ui:insert name="bottom-content" id="bottom-content" />
+				</div>
 			</div>
 		</h:form>
 

@@ -3,6 +3,10 @@ package com.entities;
 import java.io.Serializable;
 import java.util.UUID;
 
+import org.apache.openjpa.persistence.jdbc.Unique;
+
+import com.interfaces.ItemInterface;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,28 +16,24 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 @MappedSuperclass
-public abstract class ItemBase implements Serializable {
+public abstract class ItemBase extends EntityImpl implements ItemInterface{
 	
 	
 	
+	private static final long serialVersionUID = 1L;
+
 	/* Provides basic implementation for items */ 
 	
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long id;
+  
 
     @Size(min = 4, max = 255)
     @NotNull
+    @Unique
     protected String name;
 
     @NotNull
     @Positive
     protected double price;
-    
-    
-    protected int quantity;
     
     protected String description;
     
@@ -89,13 +89,6 @@ public abstract class ItemBase implements Serializable {
         this.price = price;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public String getDescription() {
         return description;

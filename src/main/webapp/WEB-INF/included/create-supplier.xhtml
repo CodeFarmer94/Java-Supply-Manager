@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+	<div>
+		
+		<h:form id="supplier-form">
+
+			<div class="card">
+				<p:growl id="messages" showDetail="true" />
+				<!-- DIALOG PANEL -->
+				<p:panel id="create-panel" class="ui-fluid"
+					style="display: flex; flex-direction: column; gap: 15px;">
+					<f:facet name="header">
+						<h:outputText value="Enter Supplier Details" class="h1" />
+					</f:facet>
+
+
+				<div class="field">
+					<p:outputLabel for="name">Name</p:outputLabel>
+					<p:inputText id="name" value="#{supplierBean.name}" required="true" />
+				</div>
+				<div class="field">
+					<p:outputLabel for="@next" value="Phone" />
+					<p:inputMask id="phone" value="#{supplierBean.contactPhone}"
+						mask="(999) 999-9999" validateMask="true" />
+				</div>
+				<div class="field">
+					<p:outputLabel for="@next" value="Email" />
+					<p:inputText id="email" value="#{supplierBean.email}"
+						required="true" />
+				</div>
+				<div class="field">
+					<p:outputLabel for="@next" value="Street" />
+					<p:inputText id="street" value="#{supplierBean.street}"
+						required="true" />
+				</div>
+				<div class="field">
+					<p:outputLabel for="city" value="City" />
+					<p:inputText id="city" value="#{supplierBean.city}" required="true" />
+				</div>
+
+				<div class="field">
+					<p:outputLabel for="zipCode" value="Zip Code" />
+					<p:inputText id="zipCode" value="#{supplierBean.zipCode}"
+						required="true" />
+				</div>
+
+				<div class="field">
+					<p:outputLabel for="country" value="Country" />
+					<p:inputText id="country" value="#{supplierBean.country}"
+						required="true" />
+				</div>
+					
+
+				</p:panel>
+				<p:panel style="display:flex; flex-direction:column; gap:1rem">
+
+
+					<div style="display: block; text-align: right !important;">
+						<p:commandButton value="Reset" icon="fa fa-remove" width="auto"
+							styleClass="ui-button-danger" update="supplier-form"
+							style="margin-right:1rem" />
+						<p:commandButton value="Create Supplier" icon="pi pi-check"
+							styleClass="ui-button-success"
+							action="#{supplierBean.saveEntity}" update="supplier-form" />
+					</div>
+
+				</p:panel>
+
+			</div>
+		</h:form>
+
+	</div>
+</h:body>
+</html>

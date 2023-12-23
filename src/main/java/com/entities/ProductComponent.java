@@ -1,13 +1,18 @@
 package com.entities;
 
+import com.interfaces.EntityInterface;
+import com.interfaces.ItemInterface;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ProductComponent {
+public class ProductComponent extends EntityImpl{
 
-    @ManyToOne
+    private static final long serialVersionUID = 1L;
+
+	@ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 

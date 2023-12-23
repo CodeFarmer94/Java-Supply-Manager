@@ -1,8 +1,11 @@
 package com.beans;
 
 import java.io.Serializable;
-
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.entities.ItemBase;
@@ -24,7 +27,7 @@ public class GenericQuantityMap<T extends ItemBase>  implements Serializable{
 	private boolean showAdded = false;
 	
 	public void addToCart(T T) {
-	    logger.info("T added");
+	    logger.info( T.getName() + " added");
 	    try {
 	        if (quantityMap.containsKey(T)) {
 	            int prevQuantity = quantityMap.get(T);
@@ -71,6 +74,9 @@ public class GenericQuantityMap<T extends ItemBase>  implements Serializable{
 		return false;
 	}
 	
+	public Set<Entry<T, Integer>> getEntryList(){
+		return quantityMap.entrySet();
+	}
 	
 	public double getTotalCost() {
 		
@@ -92,7 +98,11 @@ public class GenericQuantityMap<T extends ItemBase>  implements Serializable{
 	    setShowAdded(!showAdded);
 	    
 	}
-
+	
+	public void resetMap() {
+		
+		this.quantityMap = new HashMap<T, Integer>();
+	}
 	
 
 	public Map<T, Integer> getQuantityMap() {

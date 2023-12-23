@@ -11,6 +11,7 @@ import org.primefaces.PrimeFaces;
 
 import com.beans.utilityBeans.EditRowBean;
 import com.beans.utilityBeans.FilterBean;
+import com.entities.Component;
 import com.interfaces.EntityInterface;
 import com.services.GenericEntityService;
 
@@ -21,6 +22,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
+import jakarta.validation.ConstraintViolationException;
 
 public abstract class  GenericDataTableBean<T extends EntityInterface> implements Serializable {
 
@@ -65,6 +67,35 @@ public abstract class  GenericDataTableBean<T extends EntityInterface> implement
 		this.entityList = entityService.findAll( entityClass );
 	}
 	
+	
+	public abstract void resetFields() ;
+	
+	public abstract void handleCreateEntity();
+	
+	
+	
+	
+	 public void saveEntity() {
+			
+		logger.info("registering component...");
+		
+		try {	
+			/* Save component with supplier foreign key */
+			
+			this.handleCreateEntity();
+	        this.refreshEntityList();
+	        this.resetFields();
+	     
+	    } catch (PersistenceException e) {
+	        logger.warning("PersistenceException occurred: " + e.getMessage());
+	       
+	    } catch (ConstraintViolationException e) {
+	        logger.warning("Exception during user registration: " + e.getMessage());
+	        
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    }
+	}
 	
 
 	/* ------- FIND ----------*/
@@ -136,7 +167,7 @@ public abstract class  GenericDataTableBean<T extends EntityInterface> implement
           this.entityList = entityService.findAll(entityClass);
           
         } else {
-            logger.warning("Number of items before filtering: " + String.valueOf(entityList.size()));
+          
             this.entityList = filterBean.filter(entityClass);
             logger.warning("Number of items after filtering: " + String.valueOf(entityList.size()));
         }

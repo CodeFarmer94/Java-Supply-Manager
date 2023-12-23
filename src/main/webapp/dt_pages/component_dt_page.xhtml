@@ -13,8 +13,8 @@
 
 		
         <ui:composition template="/WEB-INF/templates/edit_datatable_template.xhtml">
-        
-		
+  
+		<ui:param name="dt_header" value="Components Catalog" />
         <ui:param name="beanName" value="#{componentBean}" />
         <ui:define name = "header">
         	Component
@@ -37,21 +37,11 @@
 				<p:column headerText="Price">
 					<p:cellEditor>
 						<f:facet name="output">
-							<h:outputText value="#{item.price}" />
+							<h:outputText value="$ #{item.price}" />
 						</f:facet>
 						<f:facet name="input">
-							<p:inputText value="#{item.price}" style="width:100%" />
-						</f:facet>
-					</p:cellEditor>
-				</p:column>
-				
-				<p:column headerText="Quantity">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{item.quantity}" />
-						</f:facet>
-						<f:facet name="input">
-							<p:inputText value="#{item.quantity}" style="width:100%" />
+							<p:inputNumber value="#{item.price}" symbol="$" required="true"
+						symbolPosition="s" decimalSeparator="," thousandSeparator="." />
 						</f:facet>
 					</p:cellEditor>
 				</p:column>

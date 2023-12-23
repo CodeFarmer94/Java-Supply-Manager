@@ -14,39 +14,18 @@
 </h:head>
 
 <h:body>
-	<ui:composition template="main-template.xhtml">
-		<ui:define name="right-panel">
+
+		
 			<div class="card">
 				
 				<h:form id="form">
-				<p:panel>
+				
 					<!-- CATCHING FACE MESSAGES -->
 					<p:growl id="messages" showDetail="true" />
 				
-					<f:facet name="header">
-						<h:outputText value="#{beanName.entityClass.getSimpleName()}  Datatable View"  />
 					
-					</f:facet>
 					<!-- CREATE NEW field BUTTON -->
-					<p:toolbar>
-						<p:toolbarGroup>
-							
-								<p:button value="New" outcome="/manager_pages/create-entity.xhtml" styleClass="ui-button-success" style="margin-right:1rem" icon="fa fa-check">
-								    <f:param name="selectedTab" value="#{beanName.entityClass.getSimpleName()}"/>
-								</p:button>
-																					
-							<!-- DELETE SELECTED fieldS -->
-							<p:commandButton id="delete-button" icon="pi pi-trash"
-								action="#{beanName.deleteSelectedEntities}"
-								value="#{beanName.deleteButtonMessage}"
-								styleClass="ui-button-danger"
-								update="form:messages form:datatable"
-								disabled="#{!beanName.hasSelected()}" />
-
-
-
-						</p:toolbarGroup>
-					</p:toolbar>
+			
 
 					<p:toolbar style="padding: 10px;">
 						<!-- Left side: Sort Dropdown and Sort Order Buttons -->
@@ -83,6 +62,8 @@
 								styleClass="ui-button-info" />
 						</p:toolbarGroup>
 					</p:toolbar>
+
+					
 					<!-- entityS DATA TABLE -->
 					<p:dataTable var="item" value="#{beanName.entityList}"
 						id="datatable" showGridlines="true"
@@ -90,39 +71,31 @@
 						rowKey="#{item.id}" editable="true" paginator="true" rows="10"
 						paginatorPosition="bottom">
 						<!-- AJAX EVENTS -->
-						<p:ajax event="rowSelect" update=":form:delete-button" />
-						<p:ajax event="rowUnselect" update=":form:delete-button" />
-						<p:ajax event="rowEdit"
-							listener="#{beanName.editRowBean.onRowEdit}"
-							update=":form:messages" />
-						<p:ajax event="rowEditCancel"
-							listener="#{beanName.editRowBean.onRowCancel}"
-							update=":form:messages" />
 
 						<!-- TABLE HEADER FACET -->
 						<f:facet name="header">
-                    List of <ui:insert name="header" />
+                    	Inventory Stock
 						</f:facet>
 
 						<!-- TABLE COLUMNS -->
-						<p:column headerText="ID">
-							<h:outputText value="#{item.id}" />
-						</p:column>
-
-						<!-- ... COLUMNS CAN BE INSERTED USING DEFINE IN THE TEMPLATE IMPLEMENTATION -->
-						<ui:insert name="columns" />
+				
+						
+						<ui:insert name="columns"/>
+						
+					
+					
 
 						<!-- ROW EDITOR COLUMN -->
-						<p:column>
+						<p:column width="2rem">
 							<p:rowEditor />
 						</p:column>
 					</p:dataTable>
-					</p:panel>
+
+
+				
 				</h:form>
 			</div>			
-		</ui:define>
-		
-	</ui:composition>
+	
 </h:body>
 </html>
 

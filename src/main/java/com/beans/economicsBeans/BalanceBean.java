@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import org.primefaces.PrimeFaces;
 
 import com.entities.Balance;
+import com.services.BalanceService;
 import com.services.GenericEntityService;
 
 import jakarta.annotation.PostConstruct;
@@ -32,22 +33,19 @@ public class BalanceBean implements Serializable{
 	
 	/* ---- Bean instance fields ----- */
 
-	/* Entity Fields*/
-	
 
-	private double balanceAmount;
-	
 	
 	/* ---- JSF view fields ---- */
 	
 	private List<Balance> balanceList;
 	private Balance currentBalance;
 	private double fundsToAdd;
+	private double fundsToRemove;
 	
 	/* ---- Services Injections ---- */
 	
 	@Inject
-	private GenericEntityService<Balance> balanceService;
+	private BalanceService balanceService;
 	@Inject
 	private transient Logger logger;
 	
@@ -56,75 +54,19 @@ public class BalanceBean implements Serializable{
 	@PostConstruct
 	public void init() {
 		this.balanceList = balanceService.findAllSorted(Balance.class, "createdAt", "DESC");
-		this.currentBalance = this.findLastBalance();
+		this.currentBalance = balanceService.findLastBalance();
 	
 	}
 	/*------- Business Logic Methods ------ */
 	
 	
-	public void createBalance(String transactionType) {
-	    try {
-	    	
-	        balanceService.save(new Balance(balanceAmount, transactionType));
-	       
-	        
-	    } catch (ConstraintViolationException e) {
-	        logger.warning("Exception during " + this.getClass().getSimpleName() + " registration: " + e.getMessage());
-	      
-	    } catch (PersistenceException e) {
-	        logger.warning("PersistenceException occurred: " + e.getMessage());
-	        
-	    } 
-	}
-	
-	
 	public void addFunds() {
-		
-		try {
-			
-			/* Check if no balance is present  */
-			if(currentBalance == null) {
-			 balanceService.save(new Balance(fundsToAdd, "Added funds"));	
-			} else {
-				
-				double prevAmount = this.currentBalance.getBalanceAmount();
-				balanceService.save(new Balance(prevAmount + fundsToAdd, "Added funds: $" + fundsToAdd ));
-			}
-			
-			/* RESET THE INPUT */
-			this.fundsToAdd = 0;
-			/* UPDATE THE CURRENT BALANCE */
-			currentBalance = this.findLastBalance();
-			this.balanceList = balanceService.findAllSorted(Balance.class, "createdAt", "DESC");
-			
-			 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Funds added to Balance"));
-		        PrimeFaces.current().executeScript("PF('createDialog').hide()");
-		        PrimeFaces.current().ajax().update("form:balanceAmount");
-		        PrimeFaces.current().ajax().update("form:balanceTable");
-			
-		} catch (ConstraintViolationException e) {
-	        logger.warning("Exception during " + this.getClass().getSimpleName() + " registration: " + e.getMessage());
-	      
-	    } catch (PersistenceException e) {
-	        logger.warning("PersistenceException occurred: " + e.getMessage());
-	        
-	    } 
+		this.balanceService.addFunds(this.fundsToAdd);
+	}
+	public void removeFunds() {
+		this.balanceService.removeFunds(this.fundsToRemove);
 	}
 	
-	
-
-	/* ------ FIND METHODS ------- */
-	
-	public Balance findLastBalance() {
-		logger.info("Finding most recent balance...");
-		try {
-			String columnName = "createdAt";
-			return balanceService.findLastByColumn(Balance.class, columnName);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
 	
 	public String getLastUpdateDate() {
 	
@@ -143,24 +85,8 @@ public class BalanceBean implements Serializable{
 	
 	/* -------- Getters and Setters -------- */
 
-	public double getBalanceAmount() {
-		return balanceAmount;
-	}
 
 
-	public void setBalanceAmount(double balanceAmount) {
-		this.balanceAmount = balanceAmount;
-		
-		
-	}
-	public GenericEntityService<Balance> getBalanceService() {
-		return balanceService;
-	}
-
-	public void setBalanceService(GenericEntityService<Balance> balanceService) {
-		this.balanceService = balanceService;
-	}
-	
 	public Balance getCurrentBalance() {
 		return currentBalance;
 	}
@@ -187,6 +113,16 @@ public class BalanceBean implements Serializable{
 
 	public void setBalanceList(List<Balance> balanceList) {
 		this.balanceList = balanceList;
+	}
+
+
+	public double getFundsToRemove() {
+		return fundsToRemove;
+	}
+
+
+	public void setFundsToRemove(double fundsToRemove) {
+		this.fundsToRemove = fundsToRemove;
 	}
 
 

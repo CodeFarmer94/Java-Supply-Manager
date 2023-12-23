@@ -2,7 +2,7 @@ package com.beans.utilityBeans;
 
 import org.primefaces.event.RowEditEvent;
 
-
+import com.interfaces.EntityInterface;
 import com.services.GenericEntityService;
 
 import jakarta.faces.application.FacesMessage;
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 
 @Named
-public class EditRowBean<T> implements Serializable {
+public class EditRowBean<T extends EntityInterface> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

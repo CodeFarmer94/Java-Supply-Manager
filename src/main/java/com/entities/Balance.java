@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.interfaces.EntityInterface;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +21,7 @@ import jakarta.validation.constraints.NotNull;
  */
 @Entity
 
-public class Balance implements Serializable {
+public class Balance implements EntityInterface, Serializable {
 
 	
 	private static final long serialVersionUID = 1L;

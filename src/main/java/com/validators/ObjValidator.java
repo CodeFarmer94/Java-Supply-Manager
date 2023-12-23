@@ -14,7 +14,7 @@ public class ObjValidator {
     @Inject
     private Validator validator;
 
-    /* Validates any T object using constraint declared in constructor */
+    /* Validates any T object using constraint declared in its instance fields */
 
     public <T> void validateObj(T obj) {
         Set<ConstraintViolation<T>> violations = validator.validate(obj);
@@ -30,7 +30,7 @@ public class ObjValidator {
      
             System.out.println(errorMessage.toString());
 
-            // Log each specific validation error
+            
             for (ConstraintViolation<T> violation : violations) {
                 StringBuilder violationMessage = new StringBuilder();
                 violationMessage.append("Property '")
@@ -44,7 +44,7 @@ public class ObjValidator {
                 System.out.println(violationMessage.toString());
             }
 
-            // Throw a ConstraintViolationException with the detailed information
+
             throw new ConstraintViolationException(errorMessage.toString(), violations);
         }
     }

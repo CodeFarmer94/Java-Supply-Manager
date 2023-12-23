@@ -27,7 +27,7 @@ import jakarta.validation.constraints.Positive;
  */
 @Entity
 
-public class ProfitInvoice implements Serializable, Invoice {
+public class ProfitInvoice extends EntityImpl  implements Invoice {
 
 	
 	
@@ -38,10 +38,7 @@ public class ProfitInvoice implements Serializable, Invoice {
 	/* ------- Entity Column fields ---------- */
 	 
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	
+
 	@OneToOne
 	@JoinColumn(name = "customer_id", unique = true)
 	private Customer customer;

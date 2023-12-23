@@ -23,6 +23,7 @@ import com.entities.Component;
 import com.entities.Product;
 import com.entities.ProductComponent;
 import com.entities.Supplier;
+import com.services.CreateProductService;
 import com.services.GenericEntityService;
 
 import jakarta.annotation.PostConstruct;
@@ -48,30 +49,24 @@ public class ProductBean extends GenericDataTableBean<Product> {
 
 	private String name;
 	private double price;
-	private int quantity;
 	private String description;
 	private int selectQuantity;
-
 
 
 	/*------ Service Injections -------*/
 	@Inject
 	private GenericQuantityMap<Component> quantityMapService;
 	
-	
 	@Inject
 	private SortingItemBean<Product> sortBean;
 
-	@Inject
-	private GenericEntityService<Component> componentService;
-
-	@Inject
-	private GenericEntityService<ProductComponent> productComponentService;
+	@Inject 
+	private CreateProductService createProductService;
+	
 	@Inject
 	private transient Logger logger;
 
-	/* ----- Bean lifecycle methods ----- */
-	/* Initialize the productList by fetching data from db */
+	
 	@PostConstruct
 	public void init() {
 		this.entityClass = Product.class;
@@ -82,22 +77,15 @@ public class ProductBean extends GenericDataTableBean<Product> {
 	/* -------- Business logic methods -------- */
 
 	@Transactional
-	public void saveEntity() {
+	public void handleCreateProduct() {
 		logger.info("Saving entity Product...");
 
 		try {
-
-			Product product = new Product(name, price, description);
-			entityService.save(product);
-			quantityMapService.getQuantityMap().forEach((component, quantity) -> 
-					this.productComponentService.save(new ProductComponent(product, component, quantity)));
+			Product newProduct = new Product(name, price, description);
+			createProductService.createProductWithComponents(newProduct, quantityMapService.getQuantityMap());
+	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Product Registered"));
 			this.refreshEntityList();
 		    this.resetFields();
-		    
-		} catch (PersistenceException e) {
-			logger.warning("PersistenceException occurred: " + e.getMessage());
-		} catch (ConstraintViolationException e) {
-			logger.warning("Exception during user registration: " + e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -131,16 +119,13 @@ public class ProductBean extends GenericDataTableBean<Product> {
 	public void resetFields() {
 		this.name = null;
 		this.price = 0.0;
-		this.quantity = 0;
+		
 		this.description = null;
 		quantityMapService.setQuantityMap(new HashMap<Component, Integer>());
 	}
 
 	/* --------- Getters and Setters ---------- */
 
-	public GenericEntityService<ProductComponent> getProductComponentService() {
-		return productComponentService;
-	}
 
 	public String getName() {
 		return name;
@@ -174,26 +159,7 @@ public class ProductBean extends GenericDataTableBean<Product> {
 		this.price = price;
 	}
 
-	public GenericEntityService<Component> getComponentService() {
-		return componentService;
-	}
 
-	public void setComponentService(GenericEntityService<Component> componentService) {
-		this.componentService = componentService;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-
-	public void setProductComponentService(GenericEntityService<ProductComponent> productComponentService) {
-		this.productComponentService = productComponentService;
-	}
 
 
 	public int getSelectQuantity() {

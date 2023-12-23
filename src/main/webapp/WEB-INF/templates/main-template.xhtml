@@ -11,23 +11,32 @@
 	<style>
 .icon {
 	vertical-align: top;
-	margin-right: 1rem;
+	margin-right: 0.2rem;
+	width:16px;
 }
 
 .field {
-	margin-bottom: 20px; /* Adjust the value as needed */
+	margin-bottom: 20px;
 }
 .field > * {
-    /* Your styles for all children of elements with class .field go here */
-    /* For example: */
    margin-bottom:0.5rem ;
 }
 
-.header {
-	font-size:1.5rem;
+.h1 {
+	font-size:1.4rem;
+	font-weight:bold;
+}
+.h2{
+	font-size: 1.3rem;
 	font-weight:bold;
 }
 
+.summary-label{
+	font-weight:bold;
+}
+.red-text{
+	color: red;
+}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
@@ -39,7 +48,7 @@
 		<p:splitter style="min-height: 100vh" styleClass="mb-5">
 			<p:splitterPanel
 				styleClass="flex align-items-center justify-content-center"
-				size="20">
+				size="15">
 				<div class="card">
 					<h:form>
 						<p:growl>
@@ -53,7 +62,7 @@
 									outcome="/manager_pages/balance-manager" 
 									icon="pi pi-dollar icon" />
 								<p:menuitem value="Inventory Manager" 
-								icon="pi pi-book icon"  outcome="/manager_pages/component-manager" />
+								icon="pi pi-book icon"  outcome="/manager_pages/inventory-manager" />
 								<p:menuitem value="Order Manager"
 								icon="pi pi-box icon" outcome="/manager_pages/order-manager"/>
 								<p:menuitem value="Create Entity"
@@ -82,7 +91,7 @@
 			</p:splitterPanel>
 			<p:splitterPanel
 				styleClass="flex align-items-center justify-content-center"
-				size="80">
+				size="85">
 				<ui:insert name="right-panel" />
 			</p:splitterPanel>
 		</p:splitter>

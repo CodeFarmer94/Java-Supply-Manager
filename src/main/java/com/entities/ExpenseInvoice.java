@@ -2,8 +2,10 @@ package com.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.interfaces.EntityInterface;
 import com.interfaces.Invoice;
 
 
@@ -27,30 +29,24 @@ import jakarta.validation.constraints.Positive;
  */
 @Entity
 
-public class ExpenseInvoice implements Serializable, Invoice {
+public class ExpenseInvoice extends EntityImpl {
 
 	private static final long serialVersionUID = 1L;
 	
 	/* ------- Entity Column fields ---------- */
 	 
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
 	
 	@NotNull
 	@OneToOne
-	@JoinColumn( name = "supplier_id", unique = true )
 	private Supplier supplier;
 
-	@NotNull
-	@Positive
-	private double amount;
-	
-	@NotNull
-	@Temporal(TemporalType.DATE)
-	private LocalDate date;
-	
+
+
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime createdAt;
+
 	@ManyToMany
 	@JoinTable(
 	        name = "expenseInvoice_components",
@@ -68,10 +64,10 @@ public class ExpenseInvoice implements Serializable, Invoice {
 		super();
 	}
 	
-	public ExpenseInvoice(@NotNull @Positive double amount, @NotNull @NotNull LocalDate date, @NotNull List<Component> expInvoiceList, Supplier supplier) {
+	public ExpenseInvoice(@NotNull List<Component> expInvoiceList, Supplier supplier) {
 		super();
-		this.amount = amount;
-		this.date = date;
+	
+		this.createdAt = LocalDateTime.now();
 	    this.expInvoiceList = expInvoiceList;
 		this.supplier = supplier;
 	}
@@ -81,29 +77,10 @@ public class ExpenseInvoice implements Serializable, Invoice {
 	
 	
 
-	public double getAmount() {
-		return amount;
-	}
 
 
 
 
-
-
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
-
-
-
-
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
 
 	public List<Component> getItemList(){
 		return this.expInvoiceList;
@@ -119,6 +96,23 @@ public class ExpenseInvoice implements Serializable, Invoice {
 
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public List<Component> getExpInvoiceList() {
+		return expInvoiceList;
 	}
 
 }
