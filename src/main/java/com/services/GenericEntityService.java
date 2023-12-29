@@ -85,6 +85,10 @@ public class GenericEntityService<T extends EntityInterface> {
                 .collect(Collectors.toList());
     }
     
+    public T remove (Class<T> entityClass, T entity){ 
+    	return genericDAO.delete(entityClass, entity.getId());
+    }
+    
     
 
 

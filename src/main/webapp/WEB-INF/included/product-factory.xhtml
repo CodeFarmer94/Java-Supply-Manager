@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:o="http://omnifaces.org/ui">
+
+<body>
+
+
+	<ui:composition
+		template="/WEB-INF/templates/map_datatable_template.xhtml">
+
+
+		<ui:param name="catalogBean" value="#{productBean}" />
+		<ui:param name="mapBean" value="#{productFactoryBean}" />
+		<ui:param name="panel_header" value="Select Products" />
+		<ui:param name="dt_header" value="Product Catalog" />
+
+		<ui:define name="top-content">
+
+
+		</ui:define>
+		<ui:define name="columns">
+
+
+			<p:column headerText="Name">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.name}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.name}" style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+			<p:column headerText="Price">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.price}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.price}" style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+
+			<p:column headerText="Code">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{item.code}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{item.code}" style="width:100%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+
+		</ui:define>
+
+
+		<ui:define name="side-content">
+
+			<p:panel style="display:flex; flex-direction:column; gap:1rem"
+				id="side-panel">
+
+
+			</p:panel>
+		</ui:define>
+
+		<ui:define name="bottom-content">
+
+
+			<p:panel id="bottom-panel">
+				<f:facet name="header">
+					<h:outputText value="Production Queue" class="h2" />
+				</f:facet>
+
+				<h:outputText value="No products proccesses waiting..."
+					rendered="#{empty productFactoryBean.productSetFromMap}" />
+				<ui:repeat value="#{productFactoryBean.getProductSetFromMap()}"
+					var="item">
+					<p:panel style=" margin: 1rem 0" id="process-panel">
+
+						<p:splitter>
+
+							<p:splitterPanel size="50">
+								<div class="field">
+									<h:outputText value="Order Details" class="h2" />
+								</div>
+
+								<p:divider />
+								<div class="field" style="margin-top: 2.5rem;">
+									<span class="bold">Product Name:</span>
+									<h:outputText value="#{item.name}" />
+								</div>
+								<div class="field">
+									<span class="bold">Product Price:</span>
+									<h:outputText value="#{item.price}" />
+								</div>
+								<div class="field">
+									<span class="bold">Product Quantity:</span>
+									<h:outputText
+										value="#{productFactoryBean.quantityMapService.getQuantityMap().get(item)}" />
+								</div>
+								<h4>Process Status: <span id="status_#{productFactoryBean.getProductProcessId(item)}">
+								#{productFactoryBean.getProductProcessStatus(item)}
+								
+								</span></h4>
+								<h4>
+									Process Progress: <span
+										id="#{productFactoryBean.getProductProcessId(item)}">
+										#{productFactoryBean.getProductProcessProgress(item)}</span>
+								</h4>
+
+								<p:progressBar
+									widgetVar="#{productFactoryBean.getProductProcessId(item)}" />
+
+								
+
+
+							</p:splitterPanel>
+							<p:splitterPanel size="50">
+								<div class="field">
+									<h:outputText value="Required Components" class="h2"
+										style="margin-left:1rem" />
+								</div>
+
+								<p:divider />
+								<p:dataTable
+									value="#{productFactoryBean.productFactoryService.calculateRequiredComponentsForProduct(item).entrySet()}"
+									var="entry">
+
+
+									<p:column headerText="ID" width="2rem">
+										<h:outputText value="#{entry.key.id}" />
+									</p:column>
+
+									<p:column headerText="Name">
+
+										<h:outputText value="#{entry.key.name}" />
+
+									</p:column>
+
+									<p:column headerText="Required">
+
+										<h:outputText
+											value="#{entry.value *  productFactoryBean.getProductQuantityFromMap(item)}" />
+
+									</p:column>
+									<p:column headerText="In_Stock">
+
+										<h:outputText
+											value="#{productFactoryBean.processComponentsService.getComponentInStockQuantity(entry.key)}" />
+
+									</p:column>
+
+								</p:dataTable>
+
+							</p:splitterPanel>
+
+
+						</p:splitter>
+
+
+						<f:facet name="footer">
+							<div style="text-align: right;">
+								<p:commandButton value="Remove" icon="fa fa-remove"
+									styleClass="ui-button-danger" style="margin-right: 1rem;" />
+								<p:commandButton value="Start Production" icon="pi pi-check"
+									update="process-panel"
+									action="#{productFactoryBean.updateProgressAsync(item, productFactoryBean.getProductQuantityFromMap(item) )}" />
+								<!-- disabled="#{!productFactoryBean.productFactoryService.areComponentsInStockSufficient(item, productFactoryBean.getProductQuantityFromMap(item))}" -->
+							</div>
+						</f:facet>
+
+					</p:panel>
+				</ui:repeat>
+			</p:panel>
+		</ui:define>
+
+	</ui:composition>
+
+</body>
+</html>

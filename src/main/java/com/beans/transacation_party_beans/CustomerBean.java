@@ -51,31 +51,15 @@ public class CustomerBean extends GenericDataTableBean<Customer>{
 	
 		/* ------- POST ----------*/ 
 
-		public void saveEntity() {
-			
-			logger.info("registering customer...");
-		    try {
-		    	
-		    	Address address = new Address(street, city, zipCode, country);
-		    	entityService.save(new Customer( name, contactPhone, email, address));
-		       
-		        
-		        /* UPDATING THE LIST AND THE VIEW */
-		        
-		        this.entityList = entityService.findAll(entityClass); // Update the list
-		        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Customer Registered"));
 
-		        this.resetFields();
+		
+		public void handleCreateEntity() {
 
-		     
-		    } catch (PersistenceException e) {
-		        logger.warning("PersistenceException occurred: " + e.getMessage());
-		       
-		    } catch (ConstraintViolationException e) {
-		        logger.warning("Exception during user registration: " + e.getMessage());
-		        
-		    }
+	    	Address address = new Address(street, city, zipCode, country);
+	    	entityService.save(new Customer( name, contactPhone, email, address));
+	    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Customer Registered"));
 		}
+		
 		
 
 		public void sort() {

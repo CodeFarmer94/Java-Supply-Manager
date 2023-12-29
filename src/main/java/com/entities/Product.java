@@ -51,6 +51,16 @@ public class Product extends ItemBase  implements EntityInterface, ItemInterface
 
 
 
+	public List<ProductComponent> getComponentsList2() {
+		return componentsList2;
+	}
+
+
+	public void setComponentsList2(List<ProductComponent> componentsList2) {
+		this.componentsList2 = componentsList2;
+	}
+
+
 	public Product() {
         super();
     }

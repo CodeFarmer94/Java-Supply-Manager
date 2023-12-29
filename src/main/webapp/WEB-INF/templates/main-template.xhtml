@@ -30,6 +30,9 @@
 	font-size: 1.3rem;
 	font-weight:bold;
 }
+.bold{
+	font-weight:bold;
+}
 
 .summary-label{
 	font-weight:bold;
@@ -37,6 +40,8 @@
 .red-text{
 	color: red;
 }
+
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
@@ -44,16 +49,15 @@
 
 <h:body>
 	<div class="card">
-
+			<p:remoteCommand name="updateForm" process="@this"
+			 />
 		<p:splitter style="min-height: 100vh" styleClass="mb-5">
 			<p:splitterPanel
 				styleClass="flex align-items-center justify-content-center"
 				size="15">
 				<div class="card">
 					<h:form>
-						<p:growl>
-							<p:autoUpdate />
-						</p:growl>
+					
 
 						<p:panelMenu>
 							<p:submenu label="Task Manager">
@@ -61,6 +65,8 @@
 								<p:menuitem value="Balance Manager"
 									outcome="/manager_pages/balance-manager" 
 									icon="pi pi-dollar icon" />
+									<p:menuitem value="Production Manager"
+								icon="fa fa-gear icon" outcome="/manager_pages/production-manager"/>
 								<p:menuitem value="Inventory Manager" 
 								icon="pi pi-book icon"  outcome="/manager_pages/inventory-manager" />
 								<p:menuitem value="Order Manager"

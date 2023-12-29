@@ -76,23 +76,16 @@ public class ProductBean extends GenericDataTableBean<Product> {
 
 	/* -------- Business logic methods -------- */
 
-	@Transactional
-	public void handleCreateProduct() {
-		logger.info("Saving entity Product...");
 
-		try {
-			Product newProduct = new Product(name, price, description);
-			createProductService.createProductWithComponents(newProduct, quantityMapService.getQuantityMap());
-	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Product Registered"));
-			this.refreshEntityList();
-		    this.resetFields();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	
-
+	public void handleCreateEntity() {
+		Product newProduct = new Product(name, price, description);
+		createProductService.createProductWithComponents(newProduct, quantityMapService.getQuantityMap());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Product Registered"));
+		
+	}
+	
 	/* Add sorting and filtering options */
 	public List<SelectItem> getSortOptions() {
 		return Arrays.asList(new SelectItem("", "Select"), new SelectItem("id", "ID"), new SelectItem("name", "Name"),

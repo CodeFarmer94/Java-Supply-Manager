@@ -1,5 +1,6 @@
 package com.services;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -16,9 +17,11 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 
 @Stateless
-public class CreateProductService {
+public class CreateProductService implements Serializable {
 
 	
+	private static final long serialVersionUID = 1L;
+
 	@Inject 
 	private GenericEntityService<Product> productService;
 	

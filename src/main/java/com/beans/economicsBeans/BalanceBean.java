@@ -46,8 +46,7 @@ public class BalanceBean implements Serializable{
 	
 	@Inject
 	private BalanceService balanceService;
-	@Inject
-	private transient Logger logger;
+
 	
 	
 	
@@ -62,9 +61,15 @@ public class BalanceBean implements Serializable{
 	
 	public void addFunds() {
 		this.balanceService.addFunds(this.fundsToAdd);
+		  FacesContext.getCurrentInstance().addMessage(null,
+		            new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "$"+ this.fundsToAdd + " Added to balance"));
+		this.refreshBalancePage();
 	}
 	public void removeFunds() {
 		this.balanceService.removeFunds(this.fundsToRemove);
+		  FacesContext.getCurrentInstance().addMessage(null,
+		            new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "$"+ this.fundsToRemove + " Removed from balance"));
+		this.refreshBalancePage();
 	}
 	
 	
@@ -79,6 +84,12 @@ public class BalanceBean implements Serializable{
 	      return dateTime.format(formatter);
 	}
 	
+	public void refreshBalancePage() {
+		this.fundsToAdd = 0;
+		this.fundsToRemove = 0;
+		this.currentBalance = balanceService.findLastBalance();
+		this.balanceList = balanceService.findAllSorted(Balance.class, "createdAt", "DESC");
+	}
 	
 	
 	

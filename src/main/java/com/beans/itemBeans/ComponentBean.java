@@ -64,29 +64,7 @@ public class ComponentBean extends GenericDataTableBean<Component>{
 
 	/* ------ Create a new component with details and default quantity zero */
 	
-	 public void saveEntity() {
-			
-		logger.info("registering component...");
-		
-		try {	
-			/* Save component with supplier foreign key */
-			entityService.save(new Component(name, price, description, selectedSupplier));
-	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Component Registered"));
-
-	        this.refreshEntityList();
-	        this.resetFields();
-	     
-	    } catch (PersistenceException e) {
-	        logger.warning("PersistenceException occurred: " + e.getMessage());
-	       
-	    } catch (ConstraintViolationException e) {
-	        logger.warning("Exception during user registration: " + e.getMessage());
-	        
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    }
-	}
-	 
+	 @Override
 	public void handleCreateEntity() {
 		entityService.save(new Component(name, price, description, selectedSupplier));
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Component Registered"));

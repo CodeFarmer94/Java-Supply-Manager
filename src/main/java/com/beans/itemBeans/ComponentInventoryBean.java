@@ -42,9 +42,19 @@ public class ComponentInventoryBean extends GenericDataTableBean<ComponentInvent
 	public void init() {
 
 		this.entityClass = ComponentInventory.class;
-
 		super.init();
 	}
+	
+	
+	public void handleCreateEntity() {
+		
+	}
+	public void resetFields() {
+		
+	}
+	
+	
+	
 
 	public double getTotalValue() {
 
@@ -56,6 +66,12 @@ public class ComponentInventoryBean extends GenericDataTableBean<ComponentInvent
 
 		return this.entityList.stream().mapToInt(e -> e.getQuantity()).sum();
 	}
+	
+	
+	
+	
+	
+	
 
 	/* INVOKING SORT METHOD FROM THE SORTBEAN AND UPDATING LIST */
 	public void sort() {

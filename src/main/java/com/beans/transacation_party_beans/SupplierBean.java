@@ -66,30 +66,17 @@ public class SupplierBean extends GenericDataTableBean<Supplier>{
 
 	/* ------- POST ----------*/ 
 
-	public void saveEntity() {
-		
-		logger.info("registering supplier...");
-	    try {
-	    	
-	    	Address address = new Address(street, city, zipCode, country);
-	    	Supplier supplier = new Supplier(name, address, contactPhone, email);
-	        entityService.save( supplier );
-	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Supplier Registered"));
-	       
-	        this.refreshEntityList();
-	        this.resetFields();
 
-	     
-	    } catch (PersistenceException e) {
-	        logger.warning("PersistenceException occurred: " + e.getMessage());
-	       
-	    } catch (ConstraintViolationException e) {
-	        logger.warning("Exception during user registration: " + e.getMessage());
-	        
-	    }
+	public void handleCreateEntity() {
+
+    	Address address = new Address(street, city, zipCode, country);
+    	Supplier supplier = new Supplier(name, address, contactPhone, email);
+    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Supplier Registered"));
+        entityService.save( supplier );
 	}
 	
-
+	
+	
 
     @Transactional
     public String calculateComponentListSize(Supplier supplier) {

@@ -55,7 +55,6 @@ public class GenericDAO<T extends EntityInterface> {
                     entityClass.getSimpleName() + " with id " + id + " not found");
         }
 
-        logger.info(entityClass.getSimpleName() + " with id " + id + " was found");
         return entity;
     }
 

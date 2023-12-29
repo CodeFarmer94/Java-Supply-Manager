@@ -10,11 +10,11 @@ import jakarta.persistence.OneToOne;
 
 
 /**
- * Entity implementation class for Entity: ComponentInventory
+ * Entity implementation class for Entity: productInventory
  *
  */
 @Entity
-public class ComponentInventory extends EntityImpl implements ItemInterface{
+public class ProductInventory extends EntityImpl implements ItemInterface{
 
 	
 	private static final long serialVersionUID = 1L;
@@ -22,32 +22,34 @@ public class ComponentInventory extends EntityImpl implements ItemInterface{
 	
 
 	@OneToOne
-	private Component component;
+	private Product product;
+
+	
 	private int quantity;
 	
 	
 	
-	public ComponentInventory(Component component,  int quantity) {
+	public ProductInventory(Product product,  int quantity) {
 		super();
-		this.component = component;
+		this.product = product;
 		this.quantity = quantity;
 	}
 
 	
 	public double getValue() {
-		return component.getPrice() * quantity;
+		return product.getPrice() * quantity;
 	}
 	
 	
-	public Component getComponent() {
-		return component;
+	public Product getproduct() {
+		return product;
 	}
 
-	public void setComponent(Component component) {
-		this.component = component;
+	public void setproduct(Product product) {
+		this.product = product;
 	}
 
-	public ComponentInventory() {
+	public ProductInventory() {
 		super();
 	}
 
@@ -61,18 +63,18 @@ public class ComponentInventory extends EntityImpl implements ItemInterface{
 
 	@Override
 	public String getName() {
-		return component.getName();
+		return product.getName();
 	}
 
 	@Override
 	public double getPrice() {
 		// TODO Auto-generated method stub
-		return component.getPrice();
+		return product.getPrice();
 	}
 
 	@Override
 	public TransactionParty getTransactionParty() {
-		return component.getTransactionParty();
+		return product.getTransactionParty();
 	}
 
 	

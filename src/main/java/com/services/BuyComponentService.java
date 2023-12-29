@@ -45,7 +45,6 @@ public class BuyComponentService implements Serializable {
 	
 	
 	
-	
 	public void buyComponents(Map<Component, Integer> quantityMap) {
 
 		try {

@@ -16,23 +16,28 @@
 			<h:body>
 				
 
-				<p:panel header="Order Manager">
+				<p:panel header="Production Manager">
 					<p:panel >
-					
 					<f:facet name="header">
-						<h:outputText class="h1" value="Budget Overview"/>
+						<h:outputText class="h1" value="Production Overview"/>
 					</f:facet>
 					<div class="field">
-						<i class="pi pi-money-bill icon"></i>
-						<p:outputLabel id="balanceAmount"
-							value="Available Funds: $#{balanceBean.currentBalance != null ? balanceBean.currentBalance.balanceAmount : 'N/A'}" />
+						<i class="fa fa-dollar icon"></i>
+						<p:outputLabel
+							value="Component Inventory Total Value: #{componentInventoryBean.getTotalValue()}" />
+					</div>
+						<div class="field">
+						<i class="fa fa-gear icon"></i>
+						<p:outputLabel 
+							value="Components Total InStock: #{componentInventoryBean.getTotalQuantities()}" />
 					</div>
 				</p:panel>
+
 					<p:tabView>
 					
-						<p:tab title="Buy Components">
+						<p:tab title="Product Factory">
 
-							<ui:include src="/WEB-INF/included/buy-components.xhtml" />
+							<ui:include src="/WEB-INF/included/product-factory.xhtml" />
 						</p:tab>
 							
 					</p:tabView>
