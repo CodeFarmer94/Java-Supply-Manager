@@ -1,25 +1,19 @@
 package com.services;
 
-public class WebSocketMessage {
+public class ProcessWebSocketMessage {
 
 	private String status;
-	private String dataString;
 	private String idString;
 	private int progress;
 	
 	
-	public WebSocketMessage( String dataString, String idString, String status, int progress) {
-		this.dataString = dataString;
+	public ProcessWebSocketMessage(  String idString, String status, int progress) {
+	
 		this.idString = idString;
 		this.status = status;
 		this.setProgress(progress);
 	}
-	public String getDataString() {
-		return dataString;
-	}
-	public void setDataString(String dataString) {
-		this.dataString = dataString;
-	}
+
 	public String getIdString() {
 		return idString;
 	}

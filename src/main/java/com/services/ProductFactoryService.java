@@ -11,13 +11,20 @@ import org.primefaces.PrimeFaces;
 import com.entities.Component;
 import com.entities.Product;
 import com.entities.ProductComponent;
+import com.entities.ProductInventory;
+import com.events.ProduceProductEvent;
+import com.exceptions.MissingComponentsException;
+import com.interfaces.InventoryService;
+
 
 import jakarta.ejb.Asynchronous;
 import jakarta.ejb.Stateless;
+import jakarta.enterprise.event.Event;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
+import com.qualifiers.ProductInventoryServiceQualifier;
 
 @Stateless
 public class ProductFactoryService {
@@ -25,41 +32,27 @@ public class ProductFactoryService {
 	
 	@Inject
 	private GenericEntityService<Product> productService;
+	
+
+	@Inject @ProductInventoryServiceQualifier
+	private ProductInventoryService productInventoryService;
+	
+	
 	@Inject
 	private ProcessComponentsService processComponentsService;
-
+	
+	@Inject
+	private Event<ProduceProductEvent> produceProductEvent;
+	
+	public void produceProduct(Product product, int productQuantity) throws MissingComponentsException {
 		
-	public void produceProduct(Product product, int productQuantity) {
-		
-		try {
-			 Set<Entry<Component, Integer>> requiredComponentSet = this.calculateRequiredComponentsForProductQuantity(product, productQuantity).entrySet();
-			 requiredComponentSet.forEach(e -> {
-				processComponentsService.consumeComponents(e.getKey(), e.getValue()); 
-			 });
-			 
-		} catch(EntityNotFoundException e) {
-			e.printStackTrace();
-		} catch(Exception e) {
-			 e.printStackTrace();
-			
-		}	 
-		 
+		     if(!this.areComponentsInStockSufficient(product, productQuantity)) {
+		    	 throw new MissingComponentsException("Missing components for production process");
+		     }
+		     
+		     produceProductEvent.fire(new ProduceProductEvent(product, productQuantity));
+		     
 	}
-	
-	
-	public Map<Component, Integer> calculateRequiredComponentsForProductQuantity(Product product, int productQuantity) {
-		
-		Product foundProduct = this.productService.findById(Product.class, product.getId());
-	    List<ProductComponent> list = foundProduct.getComponentsList2();
-	    Map<Component, Integer> map = new HashMap<>();
-	    if (list != null) {
-	        list.forEach(e -> {
-	            map.put(e.getComponent(), e.getQuantity() * productQuantity);
-	        });
-	    }
-	    return map;
-	}
-	
 	
 	public boolean areComponentsInStockSufficient(Product product, int quantity) {
 		
@@ -69,9 +62,10 @@ public class ProductFactoryService {
 		return requirementsEntryList.stream().allMatch(e -> {
 			int requiredQuantity = e.getValue();
 			int inStockQuantity;
+			Component requiredComponent = e.getKey();
 			
-			if(inventoryStock.containsKey(e)) {
-				inStockQuantity = inventoryStock.get(e);
+			if(inventoryStock.containsKey(requiredComponent)) {
+				inStockQuantity = inventoryStock.get(requiredComponent);
 			}
 			else {
 				System.out.println("Quantity is zero");
@@ -84,6 +78,21 @@ public class ProductFactoryService {
 	}
 	
 	
+	
+	
+	
+	private Map<Component, Integer> calculateRequiredComponentsForProductQuantity(Product product, int productQuantity) {
+		
+		Product foundProduct = this.productService.findById(Product.class, product.getId());
+	    List<ProductComponent> list = foundProduct.getComponentsList2();
+	    Map<Component, Integer> map = new HashMap<>();
+	    if (list != null) {
+	        list.forEach(e -> {
+	            map.put(e.getComponent(), e.getQuantity() * productQuantity);
+	        });
+	    }
+	    return map;
+	}
 	
 	
 	

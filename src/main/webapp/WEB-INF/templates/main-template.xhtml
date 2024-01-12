@@ -44,6 +44,14 @@
 
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+<script>
+
+function handleClick(){
+	console.log("clicked");
+
+	document.getElementById("order-outcome-text).innerHTML = "Order placed successfully";
+}
+</script>
 
 </h:head>
 
@@ -69,8 +77,10 @@
 								icon="fa fa-gear icon" outcome="/manager_pages/production-manager"/>
 								<p:menuitem value="Inventory Manager" 
 								icon="pi pi-book icon"  outcome="/manager_pages/inventory-manager" />
-								<p:menuitem value="Order Manager"
-								icon="pi pi-box icon" outcome="/manager_pages/order-manager"/>
+								<p:menuitem value="Buy Component"
+								icon="pi pi-box icon" outcome="/manager_pages/buy-component-manager"/>
+								<p:menuitem value="Sell Product"
+								icon="pi pi-box icon" outcome="/manager_pages/sell-product-manager"/>
 								<p:menuitem value="Create Entity"
 								icon="fa fa-gear icon" outcome="/manager_pages/create-entity"/>
 								

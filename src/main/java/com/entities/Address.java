@@ -20,6 +20,8 @@ public class Address  implements Serializable{
     private String city;
     private String zipCode;
     private String country;
+    		
+    /* --------- Constructors  --------- */
     
     
     public Address(String street, String city, String zipCode, String country) {
@@ -33,6 +35,7 @@ public class Address  implements Serializable{
     public Address () {
     	
     }
+    
     
     @Override
     public String toString() {

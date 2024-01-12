@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<head>
+	<style>
+
+
+</style>
+</head>
+<h:body>
+	<div>
+		<p:steps activeIndex="1">
+		<p:menuitem value="Select Products" />
+		<p:menuitem value="View Order"  />
+		<p:menuitem value="Order Status"  />
+		</p:steps>
+		<p:panel style="margin-top:1rem;">	
+		
+			<f:facet name="header">
+				<h:outputText value="Order Overview" class="h1"/>
+			</f:facet>
+			
+			<p:splitter>
+
+				<p:splitterPanel size="50">
+					<p:dataTable var="item"
+						value="#{sellProductBean.getCartMap().entrySet()}"
+						id="view-buy-order">
+						<p:column headerText="Product Name">
+							<h:outputText value="#{item.key.name}" />
+						</p:column>
+						<p:column headerText="Product Price">
+							<h:outputText value="#{item.key.price}" />
+						</p:column>
+						<p:column headerText="Product Quantity">
+							<h:outputText value="#{item.value}" />
+						</p:column>
+					</p:dataTable>
+				</p:splitterPanel>
+				<p:splitterPanel size="50" style="padding:1rem">
+
+				<div class="field">
+						<p:outputLabel for="@next" value="Select a customer" class="header" style="margin-bottom:2rem; font-size:20px; font-weight:bold"/>
+						<p:selectOneListbox id="advanced" style="margin-top:1rem"
+							value="#{sellProductBean.selectedCustomer}" 
+							panelStyle="width:180px" var="c" converter="customerConverter"
+							filter="true" filterMatchMode="contains" filterNormalize="true">
+					
+							<f:selectItems value="#{customerBean.entityList}" var="customer"
+								itemValue="#{customer}" itemLabel="#{customer.name}" />
+								
+								
+							<p:column style="width:10%" >
+								<h:outputText value="#{c.id}" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{c.name}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{c.address.country}" />
+							</p:column>
+
+							<f:facet name="footer">
+								<h:outputText
+									value="#{customerBean.entityList.size()} Customers Found..."
+									style="font-weight:bold;" styleClass="py-1 block" />
+							</f:facet>
+						</p:selectOneListbox>
+					</div>
+				
+
+
+
+				</p:splitterPanel>
+			</p:splitter>
+			<div style="display:flex;justify-content:space-between; padding: 1rem 2rem 0 2rem;">
+				
+				<p:commandButton  icon="pi pi-undo" value="Back" iconPos="left" onclick="PF('wiz').back();"
+							styleClass="ui-button-primary"/>
+				<div>
+				<p:commandButton value="Reset" icon="fa fa-remove"
+							styleClass="ui-button-danger" oncomplete="updatePage()"
+							style="margin-right:1rem" update="form" />
+				<p:commandButton value="Sell Products" icon="pi pi-check"
+							styleClass="ui-button-success" onsuccess="PF('wiz').next();"
+							action="#{sellProductBean.handleSellAction}"
+							oncomplete="updateAddRemove()" update="form" 
+							 />
+				</div>
+			</div>
+		</p:panel>
+
+	</div>
+</h:body>
+</html>

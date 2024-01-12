@@ -29,7 +29,7 @@ public class Product extends ItemBase  implements EntityInterface, ItemInterface
     /*--------- Entity column fields --------------*/
 
     
-
+    
 
     @OneToMany(mappedBy = "product") 
     private List<ProductComponent> componentsList2;

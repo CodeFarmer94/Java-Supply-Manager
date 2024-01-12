@@ -18,9 +18,6 @@ public class ComponentInventory extends EntityImpl implements ItemInterface{
 
 	
 	private static final long serialVersionUID = 1L;
-	
-	
-
 	@OneToOne
 	private Component component;
 	private int quantity;

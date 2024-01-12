@@ -7,14 +7,15 @@ import java.util.stream.Collectors;
 
 import com.dao.GenericDAO;
 import com.interfaces.EntityInterface;
+import com.interfaces.GenericEntityServiceInterface;
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
-@Transactional
+
 @Stateless
-public class GenericEntityService<T extends EntityInterface> {
+public class GenericEntityService<T extends EntityInterface>  {
 	
 	
     @Inject
@@ -50,6 +51,7 @@ public class GenericEntityService<T extends EntityInterface> {
     public List<T> findByValue(Class<T> entityClass, String columnName, Object value){
     	return genericDAO.findByValue(entityClass, columnName, value);
     }
+  
     
     
     

@@ -108,7 +108,7 @@ public class ComponentBean extends GenericDataTableBean<Component>{
             logger.info("Sort Order: " + sortBean.getSelectedSortOrder());
             List<Component> sortedList = sortBean.sortList(entityList);
             this.entityList = sortedList;
-            PrimeFaces.current().ajax().update("form");
+           
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
@@ -163,10 +163,6 @@ public class ComponentBean extends GenericDataTableBean<Component>{
 	public double getPrice() {
 		return price;
 	}
-
-
-
-
 
 
 

@@ -3,6 +3,7 @@ package com.entities;
 import com.interfaces.EntityInterface;
 import com.interfaces.ItemInterface;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -12,7 +13,7 @@ public class ProductComponent extends EntityImpl{
 
     private static final long serialVersionUID = 1L;
 
-	@ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST) // or CascadeType.ALL
     @JoinColumn(name = "product_id")
     private Product product;
 

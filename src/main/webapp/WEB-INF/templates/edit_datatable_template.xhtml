@@ -62,7 +62,7 @@
 							<p:selectOneButton value="#{beanName.sortBean.selectedSortOrder}">
 								<f:selectItem itemLabel="ASC" itemValue="ASC" />
 								<f:selectItem itemLabel="DESC" itemValue="DESC" />
-								<p:ajax event="change" listener="#{beanName.sort}" />
+								<p:ajax event="change" listener="#{beanName.sort}" update="form"/>
 							</p:selectOneButton>
 						</p:toolbarGroup>
 

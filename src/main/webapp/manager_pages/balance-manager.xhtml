@@ -45,6 +45,15 @@
 								disabled = "#{balanceBean.currentBalance == null ? true : false}"
 								onclick="PF('removeFundsDialog').show()" style="margin-left:1rem"/>
 						</p:panel>
+						 <p:selectOneButton value="#{barChartProductSales.selectedType}" >
+						 <p:ajax event="change"  update="form"/>
+				            <f:selectItem itemLabel="Quarterly Sales" itemValue="quarter"/>
+				            <f:selectItem itemLabel="Monthly Sales" itemValue="monthly"/>
+       					 </p:selectOneButton>
+						<p:barChart id="barChart"
+						 model="#{barChartProductSales.getBarModel(barChartProductSales.selectedType, 2023)}" style="width: 100%; height: 350px;"/>
+						 <p:donutChart model="#{donutChartExpenseProfit.getDonutModel()}" style="width: 50%; height: 200px;"/>
+						
 					</p:panel>
 					
         <p:panel header="Transaction History">

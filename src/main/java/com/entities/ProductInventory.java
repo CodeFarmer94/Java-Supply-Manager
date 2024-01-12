@@ -41,7 +41,7 @@ public class ProductInventory extends EntityImpl implements ItemInterface{
 	}
 	
 	
-	public Product getproduct() {
+	public Product getProduct() {
 		return product;
 	}
 
@@ -76,6 +76,9 @@ public class ProductInventory extends EntityImpl implements ItemInterface{
 	public TransactionParty getTransactionParty() {
 		return product.getTransactionParty();
 	}
+
+
+	
 
 	
 

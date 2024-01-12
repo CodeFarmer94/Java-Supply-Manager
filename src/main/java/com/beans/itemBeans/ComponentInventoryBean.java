@@ -3,6 +3,7 @@ package com.beans.itemBeans;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import com.entities.ComponentInventory;
 import com.entities.Product;
 import com.entities.Supplier;
 import com.services.GenericEntityService;
+import com.services.ProcessComponentsService;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
@@ -37,15 +39,31 @@ public class ComponentInventoryBean extends GenericDataTableBean<ComponentInvent
 
 	@Inject
 	private SortingItemBean<ComponentInventory> sortBean;
+	@Inject
+	private ProcessComponentsService processComponentsService;
+	
+	private Map<Component, Integer> inStockComponentMap;
 
 	@PostConstruct
 	public void init() {
-
+		this.inStockComponentMap = processComponentsService.getComponentInventoryQuantitiesMap();
 		this.entityClass = ComponentInventory.class;
 		super.init();
 	}
 	
+	public void refreshMap() {
+		this.inStockComponentMap = processComponentsService.getComponentInventoryQuantitiesMap();
+	}
 	
+	
+	public Map<Component, Integer> getInStockComponentMap() {
+		return inStockComponentMap;
+	}
+
+	public void setInStockComponentMap(Map<Component, Integer> inStockComponentMap) {
+		this.inStockComponentMap = inStockComponentMap;
+	}
+
 	public void handleCreateEntity() {
 		
 	}

@@ -80,7 +80,7 @@ public abstract class  GenericDataTableBean<T extends EntityInterface> implement
 		logger.info("registering component...");
 		
 		try {	
-			/* Save component with supplier foreign key */
+			
 			
 			this.handleCreateEntity();
 	        this.refreshEntityList();

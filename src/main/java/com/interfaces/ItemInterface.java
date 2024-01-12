@@ -1,6 +1,6 @@
 package com.interfaces;
 
-public interface ItemInterface {
+public interface ItemInterface extends EntityInterface{
 	
 	long getId();
 	String getName();

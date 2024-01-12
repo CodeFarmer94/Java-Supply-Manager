@@ -16,55 +16,25 @@
 		<ui:param name="panel_header" value= "Component Catalog" />
 		<ui:param name="dt_header" value="Components Catalog" />
 
+		<ui:define name="top-content">
+		<div class="steps" >
+		<p:steps activeIndex="0" style="margin-bottom:1rem !important" class="steps">
+		<p:menuitem value="Select Components" />
+		<p:menuitem value="View Order"  />
+		<p:menuitem value="Order Status"  />
+		</p:steps>
+		</div>
+		</ui:define>
+		<ui:define name="dt-panel-footer">
 		
-		<ui:define name="side-content">
-
-			<p:panel style="display:flex; flex-direction:column; gap:1rem"
-				id="side-panel">
-				<f:facet name="header">
-					<h:outputText value="Order Overview" class="h1" />
-				</f:facet>
-
-				<div class="field">
-					<span class="summary-label">Total added items cost: </span>
-					<h:outputText
-						value="$#{buyComponentBean.quantityMapService.getTotalCost()}"
-						 />
-				</div>
-
-				<div class="field">
-					<span class="summary-label">Balance remaining after
-						purchase:  </span>
-					<h:outputText
-						value="$ #{buyComponentBean.getRemainingBalanceAfterBuy()} " 
-						styleClass="#{buyComponentBean.isBalanceInsufficient() ? 'red-text' : ''}"/>
-				</div>
-
-				<div class="field">
-					<span class="summary-label">Total number of different
-						components: </span>
-					<h:outputText
-						value="#{buyComponentBean.quantityMapService.quantityMap.size()}" />
-				</div>
-
-				<div class="field">
-					<span class="summary-label">Total number of components: </span>
-					<h:outputText
-						value="#{buyComponentBean.quantityMapService.getTotalQuantities()}" />
-				</div>
-
-
-				<div style="display: block; text-align: right !important;">
-					<p:commandButton value="Reset" icon="fa fa-remove"
-						styleClass="ui-button-danger" oncomplete="updatePage()"
-						style="margin-right:1rem" update="form" />
-					<p:commandButton value="Buy" icon="pi pi-check"
-						styleClass="ui-button-success"
-						action="#{buyComponentBean.handleBuyAction}" oncomplete="updateAddRemove()" update="form"
-						  disabled="#{buyComponentBean.isBalanceInsufficient() ? true : false}"/>
-				</div>
-
-			</p:panel>
+			<div style="display:flex;justify-content:space-between; padding: 1rem 2rem 0 2rem;">
+				
+				<p:commandButton  icon="fa fa-remove" value="Reset" iconPos="left"
+							styleClass="ui-button-danger"/>
+				<p:commandButton  onclick="PF('wiz').next();" icon="pi pi-arrow-right" value="Next" iconPos="right" onsuccess="#{buyComponentBean.resetOrderStatus()}"
+							styleClass="ui-button-primary" disabled="#{buyComponentBean.getCartMap().isEmpty()}"/>
+			</div>
+			
 		</ui:define>
 		<ui:define name="columns">
 

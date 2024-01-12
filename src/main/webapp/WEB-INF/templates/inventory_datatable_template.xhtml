@@ -18,10 +18,9 @@
 		
 			<div class="card">
 				
-				<h:form id="form">
 				
-					<!-- CATCHING FACE MESSAGES -->
-					<p:growl id="messages" showDetail="true" />
+				
+					
 				
 					
 					<!-- CREATE NEW field BUTTON -->
@@ -31,7 +30,7 @@
 						<!-- Left side: Sort Dropdown and Sort Order Buttons -->
 						<p:toolbarGroup align="left" style="display:flex; gap:1rem;">
 							<h:outputLabel value="Sort by: " style="margin-right: 5px;" />
-							<p:selectOneMenu id="sortColumnDropdown"
+							<p:selectOneMenu 
 								value="#{beanName.sortBean.selectedSortColumn}">
 								<f:selectItems value="#{beanName.sortOptions}" />
 								<p:ajax event="change" listener="#{beanName.sort}" />
@@ -66,7 +65,7 @@
 					
 					<!-- entityS DATA TABLE -->
 					<p:dataTable var="item" value="#{beanName.entityList}"
-						id="datatable" showGridlines="true"
+						 showGridlines="true"
 						selection="#{beanName.selectedEntityList}" rowSelectMode="add"
 						rowKey="#{item.id}" editable="true" paginator="true" rows="10"
 						paginatorPosition="bottom">
@@ -93,7 +92,7 @@
 
 
 				
-				</h:form>
+			
 			</div>			
 	
 </h:body>

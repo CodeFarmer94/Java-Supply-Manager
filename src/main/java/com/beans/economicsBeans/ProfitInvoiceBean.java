@@ -31,8 +31,6 @@ public class ProfitInvoiceBean implements Serializable {
 
     /* ------- Service Injections ----------- */
 
-    @Inject
-    private GenericEntityService<ProfitInvoice> profitInvoiceService;
 
     @Inject
     private GenericEntityService<Product> productService;
@@ -41,29 +39,6 @@ public class ProfitInvoiceBean implements Serializable {
     private Logger logger;
 
     /* ------ Business Logic Methods --------- */
-
-    public String createProfitInvoice() {
-
-        try {
-            /* Finding list of products using user provided id */
-            List<Product> invoiceProductList = productService.findListById(Product.class, invoiceProductIdsList);
-
-            /* Creating new Profit Invoice */
-            profitInvoiceService.save(new ProfitInvoice(amount, date, invoiceProductList, customer));
-
-            return "profit_invoice_success";
-
-        } catch (EntityNotFoundException e) {
-            logger.warning(e.getMessage());
-            return "entity_not_found_exception";
-        } catch (ConstraintViolationException e) {
-            logger.warning("Exception during user registration: " + e.getMessage());
-            return "constraint_violation_exception";
-        } catch (PersistenceException e) {
-            logger.warning("PersistenceException occurred: " + e.getMessage());
-            return "persistence_exception";
-        }
-    }
 
     /* ------ Getters and Setters ------- */
 

@@ -2,10 +2,11 @@ package com.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import com.interfaces.Invoice;
-
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,99 +21,84 @@ import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-
 /**
  * Entity implementation class for Entity: ExpenseInvoice
  *
  */
 @Entity
 
-public class ProfitInvoice extends EntityImpl  implements Invoice {
+public class ProfitInvoice extends EntityImpl implements Invoice {
 
-	
-	
 	private static final long serialVersionUID = 1L;
-	
-	
-	
+
 	/* ------- Entity Column fields ---------- */
-	 
-	
 
 	@OneToOne
-	@JoinColumn(name = "customer_id", unique = true)
 	private Customer customer;
 
+
 	@NotNull
-	@Positive
-	private double amount;
-	
-	@NotNull
-	@Temporal(TemporalType.DATE)
-	private LocalDate date;
-	
+	@Temporal(TemporalType.TIMESTAMP)
+	private LocalDateTime createdAt;
+
 	
 	@ManyToMany
-	@JoinTable(
-	        name = "profitInvoice_components",
-	        joinColumns = @JoinColumn(name = "profitInvoice_id"),
-	        inverseJoinColumns = @JoinColumn(name = "product_id"))
-	private List<Product> proInvoiceList;  
+	@JoinTable(name = "profitInvoice_components", joinColumns = @JoinColumn(name = "profitInvoice_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+	private Set<Product> proInvoiceList;
+	
+	private double totalAmount;
 	
 	
-	
-	/* ------ Constructors -------- */ 
-	
-	
+
+	/* ------ Constructors -------- */
+
 	public ProfitInvoice() {
 		super();
 	}
-	
-	public ProfitInvoice(@NotNull @Positive double amount, @NotNull @NotNull LocalDate date, @NotNull List<Product> itemList, Customer customer) {
+
+	public ProfitInvoice(Set<Product> itemList, Customer customer) {
 		super();
-		this.amount = amount;
-		this.date = date;
+	
+		this.createdAt = LocalDateTime.now();
 		this.proInvoiceList = itemList;
 		this.customer = customer;
+		this.setTotalAmount(this.calcTotalAmount());
+	}
+	public ProfitInvoice(Set<Product> itemList, Customer customer, LocalDateTime createdAt) {
+		super();
+	
+		this.createdAt = createdAt;
+		this.proInvoiceList = itemList;
+		this.customer = customer;
+		this.setTotalAmount(this.calcTotalAmount());
+		
 	}
 
-	
 	/* -------- Getters and Setters ------- */
-	
-	
 
-	public double getAmount() {
-		return amount;
+
+	public double calcTotalAmount() {
+	   return this.proInvoiceList
+			   .stream()
+			   .mapToDouble(Product::getPrice)
+			   .sum();
 	}
 
-
-
-	public LocalDate getDate() {
-		return date;
+	
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
-
-
-	public List<Product> getProInvoiceList() {
+	
+	public Set<Product> getProInvoiceList() {
 		return proInvoiceList;
 	}
 
-	public void setProInvoiceList(List<Product> proInvoiceList) {
+	public void setProInvoiceList(Set<Product> proInvoiceList) {
 		this.proInvoiceList = proInvoiceList;
 	}
 
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
 
-
-
-	public void setDate(@NotNull LocalDate date) {
-		this.date = date;
-	}
-
-
-
-
+	
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -121,5 +107,13 @@ public class ProfitInvoice extends EntityImpl  implements Invoice {
 		this.customer = customer;
 	}
 
+	public double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	
 
 }

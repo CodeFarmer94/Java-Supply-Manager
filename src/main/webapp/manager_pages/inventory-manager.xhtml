@@ -21,23 +21,43 @@
 					<f:facet name="header">
 						<h:outputText class="h1" value="Inventory Overview"/>
 					</f:facet>
-					<div class="field">
-						<i class="fa fa-dollar icon"></i>
-						<p:outputLabel
-							value="Component Inventory Total Value: #{componentInventoryBean.getTotalValue()}" />
-					</div>
+						<div style="display:flex">
+						<div style="width:50%">
 						<div class="field">
-						<i class="fa fa-gear icon"></i>
-						<p:outputLabel 
-							value="Components Total InStock: #{componentInventoryBean.getTotalQuantities()}" />
+							<i class="fa fa-dollar icon"></i>
+							<p:outputLabel
+								value="Product Inventory Total Value: #{productInventoryBean.getTotalValue()}" />
+							</div>
+						<div class="field">
+							<i class="fa fa-gear icon"></i>
+							<p:outputLabel
+								value="Products Total InStock: #{productInventoryBean.getTotalQuantities()}" />
+						</div>
+						</div>
+						<div style="width:50%">
+						<div class="field">
+								<i class="fa fa-dollar icon"></i>
+								<p:outputLabel
+									value="Component Inventory Total Value: #{componentInventoryBean.getTotalValue()}" />
+						</div>
+						<div class="field">	
+								<i class="fa fa-gear icon"></i>
+								<p:outputLabel
+									value="Components Total InStock: #{componentInventoryBean.getTotalQuantities()}" />
+							</div>
+							</div>
 					</div>
-				</p:panel>
+					</p:panel>
 
 					<p:tabView>
 					
 						<p:tab title="Components Inventory">
 
 							<ui:include src="/WEB-INF/included/components-inventory.xhtml" />
+						</p:tab>
+						<p:tab title="Products Inventory">
+
+							<ui:include src="/WEB-INF/included/products-inventory.xhtml" />
 						</p:tab>
 							
 					</p:tabView>

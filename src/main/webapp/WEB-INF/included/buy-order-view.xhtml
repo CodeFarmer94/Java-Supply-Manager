@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<head>
+	<style>
+
+
+</style>
+</head>
+<h:body>
+	<div>
+		<p:steps activeIndex="1">
+		<p:menuitem value="Select Components" />
+		<p:menuitem value="View Order"  />
+		<p:menuitem value="Order Status"  />
+		</p:steps>
+		<p:panel style="margin-top:1rem;">	
+		
+			<f:facet name="header">
+				<h:outputText value="Order Overview" class="h1"/>
+			</f:facet>
+			
+			<p:splitter>
+
+				<p:splitterPanel size="50">
+					<p:dataTable var="item"
+						value="#{buyComponentBean.quantityMapService.quantityMap.entrySet()}"
+						id="view-buy-order">
+						<p:column headerText="Component Name">
+							<h:outputText value="#{item.key.name}" />
+						</p:column>
+						<p:column headerText="Component Price">
+							<h:outputText value="#{item.key.price}" />
+						</p:column>
+						<p:column headerText="Component Quantity">
+							<h:outputText value="#{item.value}" />
+						</p:column>
+					</p:dataTable>
+				</p:splitterPanel>
+				<p:splitterPanel size="50" style="padding:1rem">
+
+					<div class="field">
+						<span class="summary-label">Total added items cost: </span>
+						<h:outputText
+							value="$#{buyComponentBean.quantityMapService.getTotalCost()}" />
+					</div>
+
+					<div class="field">
+						<span class="summary-label">Balance remaining after
+							purchase: </span>
+						<h:outputText
+							value="$ #{buyComponentBean.getRemainingBalanceAfterBuy()} "
+							styleClass="#{buyComponentBean.isBalanceInsufficient() ? 'red-text' : ''}" />
+					</div>
+
+					<div class="field">
+						<span class="summary-label">Total number of different
+							components: </span>
+						<h:outputText
+							value="#{buyComponentBean.quantityMapService.quantityMap.size()}" />
+					</div>
+
+					<div class="field">
+						<span class="summary-label">Total number of components: </span>
+						<h:outputText
+							value="#{buyComponentBean.quantityMapService.getTotalQuantities()}" />
+					</div>
+
+
+
+
+				</p:splitterPanel>
+			</p:splitter>
+			<div style="display:flex;justify-content:space-between; padding: 1rem 2rem 0 2rem;">
+				
+				<p:commandButton  icon="pi pi-undo" value="Back" iconPos="left" onclick="PF('wiz').back();"
+							styleClass="ui-button-primary"/>
+				<div>
+				<p:commandButton value="Reset" icon="fa fa-remove"
+							styleClass="ui-button-danger" oncomplete="updatePage()"
+							style="margin-right:1rem" update="form" />
+				<p:commandButton value="Buy" icon="pi pi-check"
+							styleClass="ui-button-success" onsuccess="PF('wiz').next();"
+							action="#{buyComponentBean.handleBuyAction}"
+							oncomplete="updateAddRemove()" update="form" 
+							disabled="#{buyComponentBean.isBalanceInsufficient() ? true : false}" />
+				</div>
+			</div>
+		</p:panel>
+
+	</div>
+</h:body>
+</html>

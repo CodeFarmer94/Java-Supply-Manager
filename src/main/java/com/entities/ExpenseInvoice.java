@@ -35,13 +35,10 @@ public class ExpenseInvoice extends EntityImpl {
 	
 	/* ------- Entity Column fields ---------- */
 	 
-	
-	
+
 	@NotNull
 	@OneToOne
 	private Supplier supplier;
-
-
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)

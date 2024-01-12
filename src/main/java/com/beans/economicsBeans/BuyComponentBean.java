@@ -27,6 +27,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.PersistenceException;
@@ -34,7 +35,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 
 @Named
-@SessionScoped
+@ViewScoped
 public class BuyComponentBean implements Serializable {
 
 	@Inject
@@ -47,36 +48,67 @@ public class BuyComponentBean implements Serializable {
 	@Inject
 	private BuyComponentService buyComponentService;
 	
+	
+	private String orderStatus;
+	
+	
+	
 	@PostConstruct
 	public void init() {
 		quantityMapService.setQuantityMap(new HashMap<Component, Integer>());
+		orderStatus = "Pending";
 	}
-
 	
+	
+
+	  public Map<Component, Integer> getCartMap(){
+		  return quantityMapService.getQuantityMap();
+	  }
+	  
 	  public void handleBuyAction() {
 	        try {
 	        	
 	            buyComponentService.buyComponents(quantityMapService.getQuantityMap());
 	            quantityMapService.getQuantityMap().clear();
+	            orderStatus = "Order successfully placed.";
 	            FacesContext.getCurrentInstance().addMessage(null,
 			            new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "Purchased Component"));
 		
 	        } catch (Exception e) {
 	            logger.warning("Error during component purchase: " + e.getMessage());
+	            orderStatus = "Failed to place order.";
 	           
 	        }
 	    }
-	  
+	    
 	 public boolean isBalanceInsufficient(){
 		  
-		 return buyComponentService.isBalanceInsufficient(quantityMapService.getQuantityMap());
+		 return buyComponentService.isBalanceInsufficient(getCartMap());
 		 
 	 }
 	 
 	 public double getRemainingBalanceAfterBuy() {
-		 return buyComponentService.getRemainingBalanceAfterBuy(quantityMapService.getQuantityMap());
+		 return buyComponentService.getRemainingBalanceAfterBuy(getCartMap());
 	 }
+	 
+	 
+	 public Set<Supplier> getSupplierSetFromMap(){
+	
+		 return this.buyComponentService.groupComponentsBySupplier(getCartMap()).keySet();
+	 }
+	 
+	 public List<Component> getComponentListForSupplier(Supplier supplier){
+		 return this.buyComponentService.groupComponentsBySupplier(getCartMap()).get(supplier);
+	 }
+	 
 	  
+		public String getOrderStatus() {
+			return orderStatus;
+		}
+
+		public void resetOrderStatus() {
+			orderStatus = "Pending";
+		}
 	  
 	public GenericQuantityMap<Component> getQuantityMapService() {
 		return quantityMapService;

@@ -54,6 +54,7 @@ public class BalanceBean implements Serializable{
 	public void init() {
 		this.balanceList = balanceService.findAllSorted(Balance.class, "createdAt", "DESC");
 		this.currentBalance = balanceService.findLastBalance();
+		currentBalance.setBalanceAmount(currentBalance.getBalanceAmount());
 	
 	}
 	/*------- Business Logic Methods ------ */

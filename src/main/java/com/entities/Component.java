@@ -9,7 +9,7 @@ import java.util.Objects;
 import com.interfaces.EntityInterface;
 import com.interfaces.ItemInterface;
 
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.ManyToMany;
@@ -28,8 +28,9 @@ public class Component extends ItemBase implements EntityInterface, ItemInterfac
 	 * A foreign key will be created representing the supplier(default supplier_id)
 	 */
 	@NotNull
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Supplier transactionParty;
+
 
 	@ManyToMany(mappedBy = "expInvoiceList")
 	private List<ExpenseInvoice> invoiceList;

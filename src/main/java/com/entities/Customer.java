@@ -3,6 +3,7 @@ package com.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.interfaces.EntityInterface;
 import com.interfaces.TransactionParty;
@@ -81,7 +82,19 @@ public class Customer extends EntityImpl implements Serializable, TransactionPar
 
 	/* -------- Getters and Setters ------- */
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+	    if (this == obj) return true;
+	    if (obj == null || getClass() != obj.getClass()) return false;
+	    Customer customer = (Customer) obj;
+	    return Objects.equals(id, customer.id);
+	}
+
+	@Override
+	public int hashCode() {
+	    return Objects.hash(id);
+	}
+
 
 
 	public String getName() {

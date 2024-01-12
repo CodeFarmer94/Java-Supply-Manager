@@ -16,8 +16,11 @@ import com.entities.Component;
 import com.entities.ComponentInventory;
 import com.entities.ExpenseInvoice;
 import com.entities.Supplier;
+import com.events.BuyComponentEvent;
+import com.interfaces.InventoryService;
 
 import jakarta.ejb.Stateless;
+import jakarta.enterprise.event.Event;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -32,84 +35,41 @@ public class BuyComponentService implements Serializable {
 	private transient Logger logger;
 	private static final long serialVersionUID = 1L;
 
-	@Inject
-	private GenericEntityService<Component> componentService;
+
 	@Inject
 	private BalanceService balanceService;
-	@Inject
-	private GenericEntityService<ExpenseInvoice> expenseInvoiceService;
-	@Inject
-	private GenericEntityService<ComponentInventory> componentInventoryService;
+	
 
 	
-	
-	
+	@Inject 
+	private Event<BuyComponentEvent> buyComponentEvent; 
 	
 	public void buyComponents(Map<Component, Integer> quantityMap) {
 
-		try {
+		
 			if (isBalanceInsufficient(quantityMap)) {
 				throw new IllegalStateException("Insufficient balance cant buy components");
 			}
-			addComponentsToInventory(quantityMap);
-			createInvoicesFromMap(quantityMap);
-			payComponentsTotalCost(quantityMap);
+			buyComponentEvent.fire(new BuyComponentEvent(quantityMap));
+		
+			
 
-
-		} catch (PersistenceException e) {
-			logger.warning("PersistenceException occurred: " + e.getMessage());
-
-		} catch (ConstraintViolationException e) {
-			logger.warning("Exception during user registration: " + e.getMessage());
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
-	public void createInvoicesFromMap(Map<Component, Integer> quantityMap) {
+	
+	public Map<Supplier, List<Component>> groupComponentsBySupplier(Map<Component, Integer> quantityMap) {
 
 		Set<Component> list = quantityMap.keySet();
-		Map<Supplier, List<Component>> map = list.stream()
+		Map<Supplier, List<Component>> mapSupplierToComponents = list.stream()
 				.collect(Collectors.groupingBy(Component::getTransactionParty));
-		map.entrySet().forEach(entry -> {
-			this.expenseInvoiceService.save(new ExpenseInvoice(entry.getValue(), entry.getKey()));
-
-		});
-
-	}
-
-	public void addComponentsToInventory(Map<Component, Integer> quantityMap) {
+		return mapSupplierToComponents;
 		
-		List<ComponentInventory> inventoryList = componentInventoryService.findAll(ComponentInventory.class);
-
-		quantityMap.entrySet().forEach(entry -> {
-			
-		    Optional<ComponentInventory> found = inventoryList.stream()
-		            .filter(e -> e.getComponent().getName().equals(entry.getKey().getName()))
-		            .findFirst();
-
-		    found.ifPresent(existingInventory -> {
-		        existingInventory.setQuantity(existingInventory.getQuantity() + entry.getValue());
-		        componentInventoryService.update(existingInventory);
-		    });
-
-		    if (!found.isPresent()) {
-		        componentInventoryService.save(new ComponentInventory(entry.getKey(), entry.getValue()));
-		    }
-
-		});
 	}
-	
-	
 
-	public void payComponentsTotalCost(Map<Component, Integer> quantityMap) {
 
-		this.balanceService.save(new Balance(getRemainingBalanceAfterBuy(quantityMap),
-				"Component Purchase: " + this.getTotalCost(quantityMap)));
-	
-	}
-	
+		
+
+
 	public double getTotalCost(Map<Component, Integer> quantityMap) {
 		
 		return quantityMap.entrySet().stream()
@@ -128,24 +88,11 @@ public class BuyComponentService implements Serializable {
 	public boolean isBalanceInsufficient(Map<Component, Integer> quantityMap) {
 
 		double balanceAmount = balanceService.findLastBalance().getBalanceAmount();
-		return balanceAmount - this.getTotalCost(quantityMap) < 0 ? true : false;
+		return balanceAmount - this.getTotalCost(quantityMap) <= 0 ? true : false;
 	}
 
 	
 	
-
-	public GenericEntityService<Component> getComponentService() {
-		return componentService;
-	}
-	public GenericEntityService<Balance> getBalanceService() {
-		return balanceService;
-	}
-	public GenericEntityService<ExpenseInvoice> getExpenseInvoiceService() {
-		return expenseInvoiceService;
-	}
-	public GenericEntityService<ComponentInventory> getComponentInventoryService() {
-		return componentInventoryService;
-	}
 
 	
 }

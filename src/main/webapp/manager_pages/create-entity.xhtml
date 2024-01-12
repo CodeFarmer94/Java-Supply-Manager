@@ -17,7 +17,9 @@
                         param.selectedTab eq 'Customer' ? 3 : 1}">   
    
                         <p:tab title="Product Entity">
+                        	<h:form id="form">
                             <ui:include src="/WEB-INF/included/create-product.xhtml" />
+                            </h:form>
                         </p:tab>
                         <p:tab title="Component Entity">
                             <ui:include src="/WEB-INF/included/create-component.xhtml" />

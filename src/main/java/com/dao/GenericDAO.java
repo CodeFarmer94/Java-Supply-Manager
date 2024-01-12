@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import com.interfaces.EntityInterface;
 import com.validators.ObjValidator;
 
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,7 +19,7 @@ import jakarta.transaction.Transactional;
  *
  * @param <T> The type of entity managed by the DAO.
  */
-@Transactional
+@Stateless
 public class GenericDAO<T extends EntityInterface> {
 
 
@@ -133,6 +134,7 @@ public class GenericDAO<T extends EntityInterface> {
         logger.info(entityClass.getSimpleName() + " with ID:" + id + " deleted");
         return entity;
     }
+
 
     /**
      * Updates the given entity in the database.
