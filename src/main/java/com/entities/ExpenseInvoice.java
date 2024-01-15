@@ -29,7 +29,7 @@ import jakarta.validation.constraints.Positive;
  */
 @Entity
 
-public class ExpenseInvoice extends EntityImpl {
+public class ExpenseInvoice extends EntityImpl implements Invoice {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -51,8 +51,8 @@ public class ExpenseInvoice extends EntityImpl {
 	        inverseJoinColumns = @JoinColumn(name = "component_id"))
 	private List<Component> expInvoiceList;  
 
+	private double totalAmount;
 	
-
 
 	/* ------ Constructors -------- */ 
 	
@@ -67,16 +67,14 @@ public class ExpenseInvoice extends EntityImpl {
 		this.createdAt = LocalDateTime.now();
 	    this.expInvoiceList = expInvoiceList;
 		this.supplier = supplier;
+		this.totalAmount = this.expInvoiceList.stream().mapToDouble(Component::getPrice).sum();
 	}
 
 	
 	/* -------- Getters and Setters ------- */
 	
 	
-
-
-
-
+	
 
 
 	public List<Component> getItemList(){
@@ -110,6 +108,16 @@ public class ExpenseInvoice extends EntityImpl {
 
 	public List<Component> getExpInvoiceList() {
 		return expInvoiceList;
+	}
+
+	@Override
+	public double getTotalAmount() {
+		
+		return this.totalAmount;
+	}
+
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 }

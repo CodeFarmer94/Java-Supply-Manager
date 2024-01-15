@@ -34,6 +34,7 @@ public class ProductInventoryBean extends GenericDataTableBean<ProductInventory>
 	
 	@Inject
 	private GenericQuantityMap<Product> quantityMapService;
+	
 	public GenericQuantityMap<Product> getQuantityMapService() {
 		return quantityMapService;
 	}

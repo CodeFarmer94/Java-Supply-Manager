@@ -20,9 +20,6 @@ public class PayInvoiceService {
 
 		double totalCost = getTotalCost(event.getQuantityMap());
 		paymentEvent.fire(totalCost);
-		System.out.println("Total cost of components is " + totalCost);
-		System.out.println("Payment event fired");
-	
 	}
 	public double getTotalCost(Map<Component, Integer> quantityMap) {
 		
@@ -31,5 +28,7 @@ public class PayInvoiceService {
 		        .sum();
 
 	}
+	
+	
 
 }

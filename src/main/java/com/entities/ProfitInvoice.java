@@ -62,7 +62,7 @@ public class ProfitInvoice extends EntityImpl implements Invoice {
 		this.createdAt = LocalDateTime.now();
 		this.proInvoiceList = itemList;
 		this.customer = customer;
-		this.setTotalAmount(this.calcTotalAmount());
+		this.totalAmount = itemList.stream().mapToDouble(Product::getPrice).sum();
 	}
 	public ProfitInvoice(Set<Product> itemList, Customer customer, LocalDateTime createdAt) {
 		super();
@@ -70,19 +70,13 @@ public class ProfitInvoice extends EntityImpl implements Invoice {
 		this.createdAt = createdAt;
 		this.proInvoiceList = itemList;
 		this.customer = customer;
-		this.setTotalAmount(this.calcTotalAmount());
+		this.totalAmount = itemList.stream().mapToDouble(Product::getPrice).sum();
 		
 	}
 
 	/* -------- Getters and Setters ------- */
 
 
-	public double calcTotalAmount() {
-	   return this.proInvoiceList
-			   .stream()
-			   .mapToDouble(Product::getPrice)
-			   .sum();
-	}
 
 	
 	public LocalDateTime getCreatedAt() {

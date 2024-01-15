@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 import com.entities.Component;
 import com.entities.ExpenseInvoice;
 import com.entities.Supplier;
+
+import com.services.ExpenseInvoiceService;
 import com.services.GenericEntityService;
 
 import jakarta.inject.Inject;
@@ -34,8 +36,8 @@ public class ExpenseInvoiceBean implements Serializable{
 	
 	/* ------- Service Injections ----------- */
 	
-	@Inject
-	private GenericEntityService<ExpenseInvoice> expenseInvoiceService;
+	@Inject 
+	private ExpenseInvoiceService expenseInvoiceService;
 	
 	@Inject GenericEntityService<Component> componentService;
 	

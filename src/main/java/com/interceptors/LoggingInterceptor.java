@@ -13,7 +13,7 @@ import jakarta.interceptor.InvocationContext;
 
 
 
-@LoggableInterceptorBinding
+@LoggableInterceptor
 @Interceptor
 public class LoggingInterceptor implements Serializable{
 

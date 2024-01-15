@@ -6,12 +6,13 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.entities.ProfitInvoice;
-import com.interfaces.SalesCalculatorService;
+import com.interfaces.InvoiceCalculatorService;
+
 import com.interfaces.SerializableFunction;
 import com.services.MonthlySalesCalculatorService;
 import com.services.ProfitInvoiceService;
 
-import com.interceptors.LoggableInterceptorBinding;
+import com.interceptors.LoggableInterceptor;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.context.SessionScoped;
@@ -23,14 +24,14 @@ import com.qualifiers.QuarterSalesCalculatorQualifier;
 
 @Named
 @SessionScoped
-@LoggableInterceptorBinding
+@LoggableInterceptor
 public class BarChartProductSales  extends BarChartView {
 	
 	private static final long serialVersionUID = 1L;
 	
 	
 	@Inject @Named("salesCalculatorStrategy")
-	private SerializableFunction<String, SalesCalculatorService> salesCalculatorStrategyProducer;
+	private SerializableFunction<String, InvoiceCalculatorService> salesCalculatorStrategyProducer;
 	
 		
 	@Inject

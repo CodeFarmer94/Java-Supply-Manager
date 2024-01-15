@@ -1,5 +1,6 @@
 package com.services;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,22 +10,28 @@ import com.entities.Component;
 import com.entities.ExpenseInvoice;
 import com.entities.Supplier;
 import com.events.BuyComponentEvent;
-import com.qualifiers.ExpenseInvoiceQualifier;
 
+
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.event.Observes;
 
 
-@ExpenseInvoiceQualifier
-public class ExpenseInvoiceService extends GenericEntityService<ExpenseInvoice> {
+
+@Stateless
+public class ExpenseInvoiceService extends GenericEntityService<ExpenseInvoice> implements Serializable {
 
 	
 	
+	private static final long serialVersionUID = 1L;
+
 	public void createInvoicesFromMap(@Observes BuyComponentEvent event) {
 
 		Map<Supplier,List<Component>> map = groupComponentsBySupplier(event.getQuantityMap());
 		map.entrySet().forEach(entry -> {
-			System.out.println("Invoice for supplier " + entry.getKey().getName() + " is created");
-			save(new ExpenseInvoice(entry.getValue(), entry.getKey()));
+			
+			ExpenseInvoice invoice = new ExpenseInvoice(entry.getValue(), entry.getKey());
+			System.out.println("Invoice for supplier " + entry.getKey().getName() + " is saved, total amount is " + invoice.getTotalAmount() + "");
+			save(invoice);
 
 		});
 

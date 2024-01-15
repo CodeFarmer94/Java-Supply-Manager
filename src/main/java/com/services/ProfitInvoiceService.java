@@ -19,6 +19,7 @@ public class ProfitInvoiceService extends GenericEntityService<ProfitInvoice> im
 	
 	private static final long serialVersionUID = 1L;
 
+	
 	public Map<Month, List<ProfitInvoice>> getInvoicesPerMonth() {
 		
 		List<ProfitInvoice>profitInvoiceList = this.findAllSorted(ProfitInvoice.class, "createdAt", "DESC");

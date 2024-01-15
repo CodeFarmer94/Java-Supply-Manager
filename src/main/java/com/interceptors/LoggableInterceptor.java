@@ -10,7 +10,7 @@ import jakarta.interceptor.InterceptorBinding;
 @InterceptorBinding
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD, ElementType.METHOD, ElementType.TYPE })
-public @interface LoggableInterceptorBinding {
+public @interface LoggableInterceptor{
 
 	
 }

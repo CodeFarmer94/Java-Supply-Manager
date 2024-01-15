@@ -65,7 +65,10 @@ public class ProductInventory extends EntityImpl implements ItemInterface{
 	public String getName() {
 		return product.getName();
 	}
-
+	
+	public String getCode() {
+		return product.getCode();
+	}
 	@Override
 	public double getPrice() {
 		// TODO Auto-generated method stub

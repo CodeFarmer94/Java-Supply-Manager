@@ -38,7 +38,7 @@ public class GenericDAO<T extends EntityInterface> {
      */
     public void save(T entity) {
     	
-    	logger.info("Saving entity ID: " + entity.getId());
+    	
         validator.validateObj(entity);
         em.persist(entity);
         logger.info(entity.getClass().getSimpleName() + " saved");

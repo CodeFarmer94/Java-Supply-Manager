@@ -51,8 +51,8 @@
 				            <f:selectItem itemLabel="Monthly Sales" itemValue="monthly"/>
        					 </p:selectOneButton>
 						<p:barChart id="barChart"
-						 model="#{barChartProductSales.getBarModel(barChartProductSales.selectedType, 2023)}" style="width: 100%; height: 350px;"/>
-						 <p:donutChart model="#{donutChartExpenseProfit.getDonutModel()}" style="width: 50%; height: 200px;"/>
+						 model="#{barChartProductSales.getBarModel(barChartProductSales.selectedType, 2023)}" style=" height: 300px;"/>
+						 <p:donutChart model="#{donutChartExpenseProfit.getDonutModel('profit/expense', 2024)}" style="width: 50%; height: 250px;"/>
 						
 					</p:panel>
 					

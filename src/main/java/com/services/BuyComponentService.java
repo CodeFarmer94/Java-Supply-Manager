@@ -46,8 +46,7 @@ public class BuyComponentService implements Serializable {
 	
 	public void buyComponents(Map<Component, Integer> quantityMap) {
 
-		
-			if (isBalanceInsufficient(quantityMap)) {
+		if (isBalanceInsufficient(quantityMap)) {
 				throw new IllegalStateException("Insufficient balance cant buy components");
 			}
 			buyComponentEvent.fire(new BuyComponentEvent(quantityMap));

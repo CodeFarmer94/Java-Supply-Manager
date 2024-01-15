@@ -16,35 +16,34 @@ public abstract class DonutChart implements Serializable{
 	
 	private DonutChartModel donutModel;
 	
+	public abstract List<Number> getDataSet(String type, int year);
+	public abstract List<String> getFields(String type);
 	
-	
-	
-	  public DonutChartModel getDonutModel() {
+	  public DonutChartModel getDonutModel(String type, int year) {
 	        donutModel = new DonutChartModel();
 	        ChartData data = new ChartData();
 	        DonutChartOptions options = new DonutChartOptions();
 	        options.setMaintainAspectRatio(false);
+	        options.isAnimateRotate();
 	        donutModel.setOptions(options);
 
 	        DonutChartDataSet dataSet = new DonutChartDataSet();
-	        List<Number> values = new ArrayList<>();
-	        values.add(300);
-	        values.add(50);
-	        values.add(100);
-	        dataSet.setData(values);
+	      
+	        dataSet.setData(getDataSet(type, year));
 
 	        List<String> bgColors = new ArrayList<>();
-	        bgColors.add("rgb(255, 99, 132)");
-	        bgColors.add("rgb(54, 162, 235)");
-	        bgColors.add("rgb(255, 205, 86)");
+	        List<String> borderColor = new ArrayList<>();
+	       // Dark blue color
+	        bgColors.add("rgba(0, 0, 255, 0.3)");
+	        // Dark red color
+	        bgColors.add("rgba(255, 0, 0, 0.3)");
+	        // Dark gray color
+	        borderColor.add("rgba(0, 0, 50, 0.3)");
 	        dataSet.setBackgroundColor(bgColors);
+	        dataSet.setBorderColor(borderColor);
 
 	        data.addChartDataSet(dataSet);
-	        List<String> labels = new ArrayList<>();
-	        labels.add("Red");
-	        labels.add("Blue");
-	        labels.add("Yellow");
-	        data.setLabels(labels);
+	        data.setLabels(getFields(type));
 
 	        donutModel.setData(data);
 	        return donutModel;

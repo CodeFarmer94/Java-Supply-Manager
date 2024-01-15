@@ -11,7 +11,9 @@ import java.util.stream.Collectors;
 
 import com.entities.Balance;
 import com.entities.ProfitInvoice;
-import com.interfaces.SalesCalculatorService;
+import com.interfaces.Invoice;
+import com.interfaces.InvoiceCalculatorService;
+
 
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Stateless;
@@ -21,7 +23,7 @@ import com.qualifiers.MonthlySalesCalculatorQualifier;
 
 @Stateless
 @MonthlySalesCalculatorQualifier 
-public class  MonthlySalesCalculatorService extends SalesCalculatorService{
+public class  MonthlySalesCalculatorService extends InvoiceCalculatorService{
 	
 
 	private static final long serialVersionUID = 1L;
@@ -45,15 +47,15 @@ public class  MonthlySalesCalculatorService extends SalesCalculatorService{
 	
 
 	@Transactional
-	public List<Number> getSalesData(List<ProfitInvoice> totalInvoiceList, int year){
+	public List<Number> getSalesData(List<? extends Invoice> invoiceList, int year){
 		
 		List<Number> salesList = new ArrayList<>();
-		Map<Month, List<ProfitInvoice>> salesMap  = totalInvoiceList.stream()
+		Map<Month, List<Invoice>> salesMap  = invoiceList.stream()
 				.filter(e -> e.getCreatedAt().getYear() == year)
 				.collect(Collectors.groupingBy( e -> e.getCreatedAt().getMonth()));
 		
 		salesMap.keySet().forEach(e -> {
-			List<ProfitInvoice> invoicePerMonthList = salesMap.get(e);
+			List<Invoice> invoicePerMonthList = salesMap.get(e);
 			double totalValue = invoicePerMonthList
 					.stream()
 					.mapToDouble(invoice -> {

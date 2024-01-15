@@ -12,7 +12,9 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import com.entities.ProfitInvoice;
-import com.interfaces.SalesCalculatorService;
+import com.interfaces.Invoice;
+import com.interfaces.InvoiceCalculatorService;
+
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -20,7 +22,7 @@ import jakarta.transaction.Transactional;
 import com.qualifiers.QuarterSalesCalculatorQualifier;
 
 @Stateless
-public class QuarterSalesCalculatorService extends SalesCalculatorService {
+public class QuarterSalesCalculatorService extends InvoiceCalculatorService {
 	
 	
 	private static final long serialVersionUID = 1L;
@@ -34,37 +36,18 @@ public class QuarterSalesCalculatorService extends SalesCalculatorService {
 	}
 	
 	
+
 	@Transactional
-	public List<Number> getSalesData(List<ProfitInvoice> totalInvoiceList){
+	@Override
+	public List<Number> getSalesData(List<? extends Invoice> invoiceList, int year){
 		
 		List<Number> salesList = new ArrayList<>();
-		Map<Month, List<ProfitInvoice>> salesMap  = totalInvoiceList.stream().collect(Collectors.groupingBy( e -> e.getCreatedAt().getMonth().firstMonthOfQuarter()));
-		
-		salesMap.keySet().forEach(e -> {
-			List<ProfitInvoice> invoicePerMonthList = salesMap.get(e);
-			
-			double totalValue = invoicePerMonthList
-					.stream()
-					.mapToDouble(invoice -> {
-						return invoice.getTotalAmount();
-					})
-					.sum();
-			salesList.add(Double.valueOf(totalValue));
-			
-		});
-		return salesList;
-	}
-	
-	@Transactional
-	public List<Number> getSalesData(List<ProfitInvoice> totalInvoiceList , int year){
-		
-		List<Number> salesList = new ArrayList<>();
-		Map<Month, List<ProfitInvoice>> salesMap  = totalInvoiceList.stream()
+		Map<Month, List<Invoice>> salesMap  = invoiceList.stream()
 				.filter(e -> e.getCreatedAt().getYear() == year)
 				.collect(Collectors.groupingBy( e -> e.getCreatedAt().getMonth().firstMonthOfQuarter()));
 		
 		salesMap.keySet().forEach(e -> {
-			List<ProfitInvoice> invoicePerMonthList = salesMap.get(e);
+			List<Invoice> invoicePerMonthList = salesMap.get(e);
 			
 			double totalValue = invoicePerMonthList
 					.stream()

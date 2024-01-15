@@ -24,32 +24,31 @@ import com.qualifiers.SellProductEvent;
 public class ProductInventoryService extends InventoryService<Product, ProductInventory> {
 
 	
+	@Inject
+	private GenericEntityService<Product> productService;
 	public void listenProduceProduct(@Observes  ProduceProductEvent event) {
 
 		Product product = event.getProduct();
 		int quantity = event.getQuantity();
 
-		consumeItems(product, quantity);
+		addItems(product, quantity);
 	
 	}
 	
-	public void addItems(@Observes @SellProductEvent Map<Product, Integer> quantityMap) {
-
-		quantityMap.entrySet().forEach(entry -> {
-			addItems(entry.getKey(), entry.getValue());
-		});
-
-	}
+	
 
 	public void addItems(Product product, int quantity) {
 
 		List<ProductInventory> inStockList = findAll(ProductInventory.class);
-
+		System.out.println(product.getName());
 		Optional<ProductInventory> found = inStockList.stream().filter(e -> e.getName().equals(product.getName()))
 				.findFirst();
 
 		if (found.isEmpty()) {
-			save(new ProductInventory(product, quantity));
+			Product managedProduct = productService.findById(Product.class, product.getId());
+			ProductInventory productInventory = new ProductInventory(managedProduct, quantity);
+			save(productInventory);
+		
 		} else {
 			ProductInventory productInventory = found.get();
 			productInventory.setQuantity(productInventory.getQuantity() + quantity);
