@@ -1,0 +1,52 @@
+<!-- dataTableDecorator.xhtml -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition>
+
+
+	<p:toolbar>
+		<!-- Left side: Sort Dropdown and Sort Order Buttons -->
+		<p:toolbarGroup align="left" style="display:flex; gap:0.5'rem; font-size:1.0rem">
+			<h:outputLabel value="Sort by: " style="margin-right: 3px;font-size:1.0rem" />
+			<p:selectOneMenu id="sortColumnDropdown" style="font-size:1rem"
+				value="#{catalogBean.sortBean.selectedSortColumn}">
+				<f:selectItems value="#{catalogBean.sortOptions}" />
+				<p:ajax event="change" listener="#{catalogBean.sort}"
+					oncomplete="updatePage()" />
+			</p:selectOneMenu>
+
+			<h:outputLabel value="Order: " style="margin: 0px 5px;" />
+			<p:selectOneButton value="#{catalogBean.sortBean.selectedSortOrder}">
+				<f:selectItem itemLabel="ASC" itemValue="ASC" style="height:0.5rem;" />
+				<f:selectItem itemLabel="DESC" itemValue="DESC" />
+				<p:ajax event="change" listener="#{catalogBean.sort}"
+					oncomplete="updatePage()" />
+			</p:selectOneButton>
+		</p:toolbarGroup>
+
+
+		<!-- Right side: Filter Dropdown, Filter Input, and Search Button -->
+		<p:toolbarGroup align="right">
+			<h:outputLabel value="Filter by: " style="margin-right: 5px;" />
+			<p:selectOneMenu
+				value="#{catalogBean.filterBean.selectedFilterColumn}">
+				<f:selectItems value="#{catalogBean.filterOptions}" />
+			</p:selectOneMenu>
+
+			<p:inputText value="#{catalogBean.filterBean.selectedFilterValue}">
+				<p:ajax event="keyup" listener="#{catalogBean.filter}"
+					oncomplete="updatePage()" />
+			</p:inputText>
+
+			<p:commandButton value="Filter" action="#{catalogBean.filter}"
+				styleClass="ui-button-info" />
+		</p:toolbarGroup>
+	</p:toolbar>
+
+
+</ui:composition>
+</html>

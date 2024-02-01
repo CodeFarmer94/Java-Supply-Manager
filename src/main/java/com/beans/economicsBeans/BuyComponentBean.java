@@ -107,7 +107,12 @@ public class BuyComponentBean implements Serializable {
 		}
 
 		public void resetOrderStatus() {
+			
 			orderStatus = "Pending";
+		}
+		
+		public void emptyCart() {
+			quantityMapService.getQuantityMap().clear();
 		}
 	  
 	public GenericQuantityMap<Component> getQuantityMapService() {

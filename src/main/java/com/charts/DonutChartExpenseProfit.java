@@ -35,6 +35,7 @@ public class DonutChartExpenseProfit extends DonutChart {
 	
 	@Override
 	public List<Number> getDataSet(String type, int year) {
+		
 		List<ProfitInvoice> salesList = profitInvoiceService.findAll(ProfitInvoice.class);
 		List<ExpenseInvoice> purchasesList = expenseInvoiceService.findAll(ExpenseInvoice.class);
 		List<Number> totalSales  = salesCalculatorStrategyProducer.apply(type).getSalesData(salesList, year);

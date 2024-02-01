@@ -19,9 +19,10 @@ public class GenericEntityService<T extends EntityInterface>  {
 	
 	
     @Inject
-    private  GenericDAO<T> genericDAO;
+    protected  GenericDAO<T> genericDAO;
     
     
+
     
     /* -------- POST ------------*/
 

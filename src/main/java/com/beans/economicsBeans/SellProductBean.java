@@ -20,10 +20,13 @@ import com.entities.ComponentInventory;
 import com.entities.Customer;
 import com.entities.ExpenseInvoice;
 import com.entities.Product;
+import com.entities.ProductInventory;
 import com.entities.Shipment;
 import com.entities.Supplier;
+import com.qualifiers.ProductInventoryServiceQualifier;
 import com.services.BuyComponentService;
 import com.services.GenericEntityService;
+import com.services.ProductInventoryService;
 import com.services.SellProductService;
 
 import jakarta.annotation.PostConstruct;
@@ -51,6 +54,8 @@ public class SellProductBean implements Serializable {
     @Inject
     private SellProductService sellProductService;
 	
+    @Inject  @ProductInventoryServiceQualifier
+    private ProductInventoryService productInventoryService;
 	
 	private String orderStatus;
 	private Customer selectedCustomer;
@@ -84,6 +89,12 @@ public class SellProductBean implements Serializable {
 	        }
 	    }
 	  
+	  public boolean isAddButtonDisabled(ProductInventory productInventory) {
+		  int selectedQuantity = quantityMapService.getItemQuantity(productInventory.getProduct());
+		  int inStockQuantity = productInventoryService.getInstockQuantity(productInventory);
+		  return selectedQuantity >= inStockQuantity;
+	  }
+	  
 	  
 	 
 	  
@@ -98,7 +109,9 @@ public class SellProductBean implements Serializable {
 		this.orderStatus = orderStatus;
 	}
 
-
+	public double getTotalCartValue() {
+		return quantityMapService.getTotalCost();
+	}
 
 	public void setSelectedCustomer(Customer selectedCustomer) {
 		System.out.println("Selected Customer: " + selectedCustomer);

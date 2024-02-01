@@ -8,7 +8,7 @@
 
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>vela</param-value>
+		<param-value>#{themeSwitcherView.selectedTheme}</param-value>
 	</context-param>
 	<context-param>
 		<param-name>primefaces.FONT_AWESOME</param-name>
@@ -18,7 +18,7 @@
      <param-name>jakarta.faces.ENABLE_WEBSOCKET_ENDPOINT</param-name>
      <param-value>true</param-value>
  </context-param>
-    <!-- 
+  
      <security-constraint>
          <web-resource-collection>
             <web-resource-name>Protected Area</web-resource-name>
@@ -27,5 +27,8 @@
         <auth-constraint>
             <role-name>admin</role-name>
         </auth-constraint>
-        </security-constraint>-->
+        </security-constraint>
+   
+     
+        
 </web-app>

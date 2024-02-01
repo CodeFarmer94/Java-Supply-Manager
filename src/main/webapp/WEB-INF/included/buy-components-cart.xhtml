@@ -17,15 +17,14 @@
 }
 </style>
 </head>
-
 <body>
 
-
 	<p:remoteCommand name="updatePage" process="@this" update="form" />
+
 	<div class="steps">
 		<p:steps activeIndex="0" style="margin-bottom:1rem !important"
 			class="steps">
-			<p:menuitem value="Select Products" />
+			<p:menuitem value="Select Components" />
 			<p:menuitem value="View Order" />
 			<p:menuitem value="Order Status" />
 		</p:steps>
@@ -37,7 +36,7 @@
 			<div style="width: 30%">
 				<ui:decorate
 					template="/WEB-INF/decorators/bar-chart-product-sales.xhtml">
-					<ui:param name="barChartBean" value="#{barChartProductSales}" />
+					<ui:param name="barChartBean" value="#{barChartComponentPurchases}" />
 				</ui:decorate>
 				<ui:decorate
 					template="/WEB-INF/decorators/transaction-history.xhtml">
@@ -47,94 +46,82 @@
 				<ui:decorate
 					template="/WEB-INF/decorators/sort-filter-toolbar.xhtml">
 
-					<ui:param name="catalogBean" value="#{productInventoryBean}" />
+					<ui:param name="catalogBean" value="#{componentBean}" />
 
 				</ui:decorate>
 
 				<ui:decorate
 					template="/WEB-INF/decorators/cart-datatable-decorator.xhtml">
 
-					<ui:param name="catalogBean" value="#{productInventoryBean}" />
-					<ui:param name="cartBean" value="#{sellProductBean}" />
-					<ui:param name="dt_header" value="Product Inventory" />
-					<ui:param name="itemVar" value="item.product" />
-
-
+					<ui:param name="catalogBean" value="#{componentBean}" />
+					<ui:param name="cartBean" value="#{buyComponentBean}" />
+					<ui:param name="dt_header" value="Component Catalog" />
 
 					<ui:define name="columns">
-
-						<p:column headerText="InStock">
-							<h:outputText value="#{item.quantity}" />
-						</p:column>
 						<p:column headerText="Quantity">
 							<div
 								style="display: flex; gap: 0.8rem; justify-content: center; align-items: center">
 								<p:commandButton icon="fa fa-plus"
-									action="#{sellProductBean.quantityMapService.addToCart(item.product)}"
-									oncomplete="updatePage()" ajax="true" process="@this"
-									disabled="#{sellProductBean.isAddButtonDisabled(item)}">
+									action="#{buyComponentBean.quantityMapService.addToCart(item)}"
+									oncomplete="updatePage()" ajax="true" process="@this">
 								</p:commandButton>
 								<h:outputText
-									value="#{sellProductBean.quantityMapService.getItemQuantity(item.product)}"
+									value="#{buyComponentBean.quantityMapService.getItemQuantity(item)}"
 									style="font-weight:bold; font-size:1.5rem"
 									id="selectedQuantity" />
 								<p:commandButton icon="fa fa-minus"
-									disabled="#{!sellProductBean.quantityMapService.isItemAdded(item.product)}"
-									action="#{sellProductBean.quantityMapService.removeFromCart(item.product)}"
+									disabled="#{!buyComponentBean.quantityMapService.isItemAdded(item)}"
+									action="#{buyComponentBean.quantityMapService.removeFromCart(item)}"
 									oncomplete="updatePage()" styleClass="ui-button-warning"
 									ajax="true" process="@this">
 								</p:commandButton>
 							</div>
 						</p:column>
 					</ui:define>
-
-
 				</ui:decorate>
-				<p:panel style="margin-top:1rem;">
-
-					<f:facet name="header">
-						<h:outputText value="Order Overview" class="h1" />
-					</f:facet>
-
-
-
-
-					<p:dataTable var="item"
-						value="#{sellProductBean.getCartMap().entrySet()}"
-						id="view-buy-order">
-						<p:column headerText="Product Name">
-							<h:outputText value="#{item.key.name}" />
-						</p:column>
-						<p:column headerText="Product Price">
-							<h:outputText value="#{item.key.price}" />
-						</p:column>
-						<p:column headerText="Product Quantity">
-							<h:outputText value="#{item.value}" />
-						</p:column>
-					</p:dataTable>
-					<div
-						style="text-align: right; margin-top: 1rem; font-weight: bold; margin-right: 1rem;">
+				<p:panel>
+					<div class="field">
+						<span class="summary-label">Total added items cost: </span>
 						<h:outputText
-							value="Total Price: $#{sellProductBean.getTotalCartValue()}"
-							class="h3">
-						</h:outputText>
+							value="$#{buyComponentBean.quantityMapService.getTotalCost()}" />
 					</div>
-					<div
+
+					<div class="field">
+						<span class="summary-label">Balance remaining after
+							purchase: </span>
+						<h:outputText
+							value="$ #{buyComponentBean.getRemainingBalanceAfterBuy()} "
+							styleClass="#{buyComponentBean.isBalanceInsufficient() ? 'red-text' : ''}" />
+					</div>
+
+					<div class="field">
+						<span class="summary-label">Total number of different
+							components: </span>
+						<h:outputText
+							value="#{buyComponentBean.quantityMapService.quantityMap.size()}" />
+					</div>
+
+					<div class="field">
+						<span class="summary-label">Total number of components: </span>
+						<h:outputText
+							value="#{buyComponentBean.quantityMapService.getTotalQuantities()}" />
+					</div>
+				</p:panel>
+
+				<div
 					style="display: flex; justify-content: space-between; padding: 1rem 2rem 0 2rem;">
 
 					<p:commandButton icon="fa fa-remove" value="Reset" iconPos="left"
-						styleClass="ui-button-danger" />
+						styleClass="ui-button-danger" update="form"  onsuccess="#{buyComponentBean.getCartMap().clear()}"
+			/>
 					<p:commandButton onclick="PF('wiz').next();"
 						icon="pi pi-arrow-right" value="Next" iconPos="right"
-						onsuccess="#{sellProductBean.resetOrderStatus()}"
+						onsuccess="#{buyComponentBean.resetOrderStatus()}"
 						styleClass="ui-button-primary"
-						disabled="#{sellProductBean.getCartMap().isEmpty()}" />
+						disabled="#{buyComponentBean.getCartMap().isEmpty()}" />
 				</div>
-				</p:panel>
-				
 			</div>
 		</div>
-
 	</p:panel>
 
 </body>

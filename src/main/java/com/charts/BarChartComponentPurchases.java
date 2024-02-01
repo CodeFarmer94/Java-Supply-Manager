@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.entities.ExpenseInvoice;
 import com.entities.ProfitInvoice;
 import com.interfaces.InvoiceCalculatorService;
 
 import com.interfaces.SerializableFunction;
+import com.services.ExpenseInvoiceService;
 
-import com.services.ProfitInvoiceService;
 
 import com.interceptors.LoggableInterceptor;
 import jakarta.annotation.PostConstruct;
@@ -25,7 +26,7 @@ import com.qualifiers.QuarterSalesCalculatorQualifier;
 @Named
 @SessionScoped
 @LoggableInterceptor
-public class BarChartProductSales  extends BarChartView {
+public class BarChartComponentPurchases  extends BarChartView {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -35,7 +36,7 @@ public class BarChartProductSales  extends BarChartView {
 	
 		
 	@Inject
-	private ProfitInvoiceService profitInvoiceService;
+	private ExpenseInvoiceService expenseInvoiceService;
 	
 	private String selectedType;
 	
@@ -49,8 +50,8 @@ public class BarChartProductSales  extends BarChartView {
 
 	@Override
      public List<Number> getChartData() {
-    	 List<ProfitInvoice> salesList = profitInvoiceService.findAll(ProfitInvoice.class);
-    	 return salesCalculatorStrategyProducer.apply(selectedType).getSalesData(salesList, selectedYear);
+    	 List<ExpenseInvoice> purchasesList = expenseInvoiceService.findAll(ExpenseInvoice.class);
+    	 return salesCalculatorStrategyProducer.apply(selectedType).getSalesData(purchasesList, selectedYear);
   
      }
      
@@ -60,7 +61,7 @@ public class BarChartProductSales  extends BarChartView {
      
      @Override
 		public String getLabel() {
-			return "Profits";
+			return "Expenses";
 		}
 
      public String getSelectedType() {

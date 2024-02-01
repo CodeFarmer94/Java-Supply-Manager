@@ -6,70 +6,75 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:o="http://omnifaces.org/ui">
+<h:head>
+<style>
 
+</style>
+
+<f:websocket channel="someChannel" onmessage="function(message) { 
+	 PF('button').disable();
+    var elementId = message.idString; 
+    document.getElementById(elementId).innerHTML = message.progress;
+    var statusId = 'status_' + elementId;
+    document.getElementById(statusId).innerHTML = message.status;
+    PF(elementId).setValue(PF(elementId).getValue() + 10);
+    console.log(message.status);
+    if(message.status == 'Completed'){
+    updatePage();
+     PF(elementId).setValue(PF(elementId).getValue() + 10);
+     
+    }
+    
+}"/>
+
+ 
+</h:head>
 <body>
 
-
-	<ui:composition
-		template="/WEB-INF/templates/map_datatable_template.xhtml">
-
+		<p:remoteCommand name="updatePage" process="@this" update="form" />
+		
+		
+		<ui:decorate template="/WEB-INF/decorators/sort-filter-toolbar.xhtml">
 
 		<ui:param name="catalogBean" value="#{productBean}" />
-		<ui:param name="mapBean" value="#{productFactoryBean}" />
-		<ui:param name="panel_header" value="Select Products" />
+
+	</ui:decorate>
+
+	<ui:decorate
+		template="/WEB-INF/decorators/cart-datatable-decorator.xhtml">
+
+		<ui:param name="catalogBean" value="#{productBean}" />
+		<ui:param name="cartBean" value="#{productFactoryBean}" />
+
 		<ui:param name="dt_header" value="Product Catalog" />
 
-		<ui:define name="top-content">
-
-
-		</ui:define>
+		
 		<ui:define name="columns">
-
-
-			<p:column headerText="Name">
-				<p:cellEditor>
-					<f:facet name="output">
-						<h:outputText value="#{item.name}" />
-					</f:facet>
-					<f:facet name="input">
-						<p:inputText value="#{item.name}" style="width:100%" />
-					</f:facet>
-				</p:cellEditor>
-			</p:column>
-
-
-			<p:column headerText="Price">
-				<p:cellEditor>
-					<f:facet name="output">
-						<h:outputText value="#{item.price}" />
-					</f:facet>
-					<f:facet name="input">
-						<p:inputText value="#{item.price}" style="width:100%" />
-					</f:facet>
-				</p:cellEditor>
-			</p:column>
-
-
-
-			<p:column headerText="Code">
-				<p:cellEditor>
-					<f:facet name="output">
-						<h:outputText value="#{item.code}" />
-					</f:facet>
-					<f:facet name="input">
-						<p:inputText value="#{item.code}" style="width:100%" />
-					</f:facet>
-				</p:cellEditor>
-			</p:column>
-
-
-
-		</ui:define>
-
+				<p:column headerText="Quantity">
+					<div
+						style="display: flex; gap: 0.8rem; justify-content: center; align-items: center">
+						<p:commandButton icon="fa fa-plus"
+							action="#{productFactoryBean.quantityMapService.addToCart(item)}"
+							oncomplete="updatePage()" ajax="true" process="@this">
+						</p:commandButton>
+						<h:outputText
+							value="#{productFactoryBean.quantityMapService.getItemQuantity(item)}"
+							style="font-weight:bold; font-size:1.5rem" id="selectedQuantity" />
+						<p:commandButton icon="fa fa-minus"
+							disabled="#{!productFactoryBean.quantityMapService.isItemAdded(item)}"
+							action="#{productFactoryBean.quantityMapService.removeFromCart(item)}"
+							oncomplete="updatePage()" styleClass="ui-button-warning"
+							ajax="true" process="@this">
+						</p:commandButton>
+					</div>
+				</p:column>
+			</ui:define>
+	</ui:decorate>
+		
 
 		
 
-		<ui:define name="bottom-content">
+		
 
 
 			<p:panel id="bottom-panel">
@@ -179,9 +184,9 @@
 					</p:panel>
 				</ui:repeat>
 			</p:panel>
-		</ui:define>
+	
 		
-	</ui:composition>
+
 	
 </body>
 </html>

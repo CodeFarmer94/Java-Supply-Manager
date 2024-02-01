@@ -30,12 +30,12 @@ public abstract class BarChartView  implements Serializable{
 
 	
 	
-	public abstract List<Number> getChartData(String type, int year);
+	public abstract List<Number> getChartData();
 	public abstract String getLabel();
-	public abstract List<String> getFields(String type);
+	public abstract List<String> getFields();
 		
 	
-	public BarChartModel getBarModel(String type, int year) {
+	public BarChartModel getBarModel() {
 		 BarChartModel barModel = new BarChartModel();
 	        ChartData data = new ChartData();
 
@@ -44,7 +44,7 @@ public abstract class BarChartView  implements Serializable{
 
 	        
 	 
-	        barDataSet.setData(getChartData(type, year));
+	        barDataSet.setData(getChartData());
 
 	        List<String> bgColor = new ArrayList<>();
 	        bgColor.add("rgba(255, 99, 132, 0.2)");
@@ -78,7 +78,7 @@ public abstract class BarChartView  implements Serializable{
 	        List<String> labels = new ArrayList<>();
 	    
 	        		
-	        data.setLabels(getFields(type));
+	        data.setLabels(getFields());
 	        barModel.setData(data);
 
 	        //Options

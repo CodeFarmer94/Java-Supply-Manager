@@ -7,6 +7,8 @@
 
 
 		<ui:composition template="/WEB-INF/templates/main-template.xhtml">
+		
+	<p:remoteCommand name="updatePage" process="@this" update="form" />
 			<ui:define name="right-panel">
 				<h:body>
 					<p:panel header="Sell Order Manager">

@@ -68,7 +68,7 @@ public class ProductFactoryService {
 				inStockQuantity = inventoryStock.get(requiredComponent);
 			}
 			else {
-				System.out.println("Quantity is zero");
+				System.out.println("Component not found in inventory");
 				inStockQuantity = 0;
 			}
 		

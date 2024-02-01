@@ -51,6 +51,13 @@ public class Component extends ItemBase implements EntityInterface, ItemInterfac
 		this.invoiceList = new ArrayList<>();
 
 	}
+	
+	public Component(String name, double price, String description) {
+		super(name, price, description);
+		this.invoiceList = new ArrayList<>();
+		this.transactionParty = null;
+
+	}
 
 	/*---------- Getters and Setters ------------*/
 

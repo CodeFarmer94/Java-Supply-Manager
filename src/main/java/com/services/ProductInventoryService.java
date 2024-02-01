@@ -26,6 +26,8 @@ public class ProductInventoryService extends InventoryService<Product, ProductIn
 	
 	@Inject
 	private GenericEntityService<Product> productService;
+	
+	
 	public void listenProduceProduct(@Observes  ProduceProductEvent event) {
 
 		Product product = event.getProduct();
@@ -35,6 +37,15 @@ public class ProductInventoryService extends InventoryService<Product, ProductIn
 	
 	}
 	
+	public void listenSellProduct(@Observes @SellProductEvent Map<Product, Integer> quantityMap) {
+
+		quantityMap.entrySet().forEach(entry -> {
+			Product product = entry.getKey();
+			int quantity = entry.getValue();
+			consumeItems(product, quantity);
+		});
+
+	}
 	
 
 	public void addItems(Product product, int quantity) {
@@ -70,9 +81,22 @@ public class ProductInventoryService extends InventoryService<Product, ProductIn
 				throw new IllegalStateException("Product quantity in stock insufficient");
 			}
 			productInventory.setQuantity(productInventory.getQuantity() - quantity);
-			update(productInventory);
+			
+			int newQuantity = productInventory.getQuantity();
+			if (newQuantity == 0) {
+			    remove(ProductInventory.class, productInventory);
+			} else {
+			    update(productInventory);
+			}
+
 		}
 
 	}
+	
+	public int  getInstockQuantity(ProductInventory productInventory) {
+		ProductInventory found = this.findById(ProductInventory.class, productInventory.getId());
 
+		return found.getQuantity();
+		
+	}
 }

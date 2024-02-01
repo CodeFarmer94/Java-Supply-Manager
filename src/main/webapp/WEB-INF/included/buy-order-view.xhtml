@@ -19,10 +19,7 @@
 		</p:steps>
 		<p:panel style="margin-top:1rem;">	
 		
-			<f:facet name="header">
-				<h:outputText value="Order Overview" class="h1"/>
-			</f:facet>
-			
+		
 			<p:splitter>
 
 				<p:splitterPanel size="50">
@@ -85,7 +82,7 @@
 				<p:commandButton value="Buy" icon="pi pi-check"
 							styleClass="ui-button-success" onsuccess="PF('wiz').next();"
 							action="#{buyComponentBean.handleBuyAction}"
-							oncomplete="updateAddRemove()" update="form" 
+							oncomplete="updatePage()" update="form" 
 							disabled="#{buyComponentBean.isBalanceInsufficient() ? true : false}" />
 				</div>
 			</div>

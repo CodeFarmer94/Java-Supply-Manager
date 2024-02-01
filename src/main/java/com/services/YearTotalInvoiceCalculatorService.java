@@ -8,7 +8,7 @@ import com.interfaces.Invoice;
 import com.interfaces.InvoiceCalculatorService;
 
 
-public class YearPurchasesSalesCalculatorService extends InvoiceCalculatorService{
+public class YearTotalInvoiceCalculatorService extends InvoiceCalculatorService{
 
 	
 	private static final long serialVersionUID = 1L;

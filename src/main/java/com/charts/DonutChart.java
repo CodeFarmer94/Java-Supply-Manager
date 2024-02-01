@@ -16,6 +16,9 @@ public abstract class DonutChart implements Serializable{
 	
 	private DonutChartModel donutModel;
 	
+	
+	
+	
 	public abstract List<Number> getDataSet(String type, int year);
 	public abstract List<String> getFields(String type);
 	

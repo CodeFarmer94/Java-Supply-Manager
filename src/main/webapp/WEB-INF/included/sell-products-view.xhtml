@@ -28,7 +28,7 @@
 				<p:splitterPanel size="50">
 					<p:dataTable var="item"
 						value="#{sellProductBean.getCartMap().entrySet()}"
-						id="view-buy-order">
+						>
 						<p:column headerText="Product Name">
 							<h:outputText value="#{item.key.name}" />
 						</p:column>
@@ -39,6 +39,14 @@
 							<h:outputText value="#{item.value}" />
 						</p:column>
 					</p:dataTable>
+			
+						<div style="text-align:right;margin-top:1rem; font-weight:bold;margin-right:1rem;">
+						<h:outputText
+							value="Total Price: $#{sellProductBean.getTotalCartValue()}"
+							class="h3">
+						</h:outputText>	
+						</div>
+							
 				</p:splitterPanel>
 				<p:splitterPanel size="50" style="padding:1rem">
 
@@ -88,7 +96,7 @@
 				<p:commandButton value="Sell Products" icon="pi pi-check"
 							styleClass="ui-button-success" onsuccess="PF('wiz').next();"
 							action="#{sellProductBean.handleSellAction}"
-							oncomplete="updateAddRemove()" update="form" 
+							oncomplete="updatePage()" update="form" 
 							 />
 				</div>
 			</div>

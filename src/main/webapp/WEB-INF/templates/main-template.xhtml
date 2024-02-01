@@ -8,7 +8,13 @@
 
 <h:head>
 
-	<style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+<script>
+			function refreshPage() {
+				location.reload(true); // Reloads the page, forcing a full reload from the server
+			}
+		</script>
+			<style>
 .icon {
 	vertical-align: top;
 	margin-right: 0.2rem;
@@ -43,22 +49,19 @@
 
 
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-<script>
-
-function handleClick(){
-	console.log("clicked");
-
-	document.getElementById("order-outcome-text).innerHTML = "Order placed successfully";
-}
-</script>
-
 </h:head>
 
 <h:body>
 	<div class="card">
-			<p:remoteCommand name="updateForm" process="@this"
-			 />
+		<p:toolbar >
+		<p:toolbarGroup alig="left">
+		Jave EE Manager
+		</p:toolbarGroup>
+		<p:toolbarGroup align="right">
+		<p:commandButton action="#{themeSwitcherView.setSelectedIndex}" oncomplete="refreshPage()" value="Change Theme"/>
+		
+		</p:toolbarGroup>
+		</p:toolbar>
 		<p:splitter style="min-height: 100vh" styleClass="mb-5">
 			<p:splitterPanel
 				styleClass="flex align-items-center justify-content-center"

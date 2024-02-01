@@ -1,8 +1,10 @@
 package com.services;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 import com.entities.Balance;
+import com.entities.Component;
 import com.qualifiers.GetPaymentEvent;
 import com.qualifiers.PaymentEvent;
 
@@ -110,4 +112,6 @@ public class BalanceService extends GenericEntityService<Balance> {
 		this.save(new Balance(prevAmount - fundsToRemove, description));
 
 	}
+
+	
 }

@@ -1,16 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
 <head>
-<meta charset="UTF-8"/>
-<title>Insert title here</title>
 
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+<style>
+.gradient-custom {
+	/* fallback for old browsers */
+	background: #6a11cb;
+	/* Chrome 10-25, Safari 5.1-6 */
+	background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1),
+		rgba(37, 117, 252, 1));
+	/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background: linear-gradient(to right, rgba(106, 17, 203, 1),
+		rgba(37, 117, 252, 1))
+}
+</style>
 </head>
+<section class="vh-100 gradient-custom">
+	<div class="container py-5 h-100">
+		<div
+			class="row d-flex justify-content-center align-items-center h-100">
+			<div class="col-12 col-md-8 col-lg-6 col-xl-5">
+				<div class="card bg-dark text-white" style="border-radius: 1rem;">
+					<div class="card-body p-5 text-center">
 
-<body>
-<form action="j_security_check" method="post">
-    <input name="j_username" type="text"/>
-    <input name="j_password" type="password"/>
-    <input type="submit"/>
-</form>
-</body>
+						<div class="mb-md-5 mt-md-4 pb-5">
+
+							<h2 class="fw-bold mb-2 text-uppercase">JAVA EE MANAGER </h2>
+							<p class="text-white-50 mb-5">Please enter your login and
+								password!</p>
+
+
+
+							<form action="j_security_check" method="POST">
+							<div class="form-outline form-white mb-4">
+								<h:outputLabel for="j_username" class="mr-2">Username</h:outputLabel>
+								<h:inputText id="j_username" size="20" />
+							</div>
+							<div class="form-outline form-white mb-4">
+								<h:outputLabel for="j_password" class="mr-2">Password</h:outputLabel >
+								<h:inputSecret id="j_password" size="20" />
+							</div>
+
+								<input type="submit" class="btn btn-primary" value="LOGIN"/>
+							</form>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
 </html>

@@ -7,6 +7,7 @@
 
 
 		<ui:composition template="/WEB-INF/templates/main-template.xhtml">
+			<p:remoteCommand name="updatePage" process="@this" update="form" />
 			<ui:define name="right-panel">
 				<h:body>
 					<p:panel header="Buy Order Manager">
@@ -14,7 +15,7 @@
 						
 							<p:wizard showStepStatus="false" widgetVar="wiz" showNavBar="false">
 								<p:tab >
-									<ui:include src="/WEB-INF/included/buy-components.xhtml" />
+									<ui:include src="/WEB-INF/included/buy-components-cart.xhtml" />
 								</p:tab>
 								<p:tab>
 									<ui:include src="/WEB-INF/included/buy-order-view.xhtml" />

@@ -10,152 +10,150 @@
 
 
 	</f:metadata>
-	
+
 	<ui:composition template="/WEB-INF/templates/main-template.xhtml">
-	
+		     
+        
 		<ui:define name="right-panel">
-			<p:remoteCommand name="updateBalancePage" process="@this" update="form add-funds-form remove-funds-form" />
-			
-				<h:form id="form">
-					<p:growl id="messages" showDetail="true" />
-					
-					<p:panel header="Financial Summary" id="financial-summary">
-						<p:panel header="Balance Statistics">
-							<div class="field">
-								<i class="pi pi-money-bill icon"></i>
-								<p:outputLabel id="balanceAmount"
-									value="Balance: $#{balanceBean.currentBalance != null ? balanceBean.currentBalance.balanceAmount : 'N/A'}" />
-							</div>
-							<div class="field">
-								<i class="pi pi-calendar icon"></i>
-								<p:outputLabel id="lastUpdated"
-									value="Last Update: #{balanceBean.currentBalance != null ? balanceBean.getLastUpdateDate() : 'N/A'}" />
-							</div>
-						</p:panel>
+			<p:remoteCommand name="updateBalancePage" process="@this"
+				update="form add-funds-form remove-funds-form" />
 
-						<p:panel header="Add Funds">
-							<p:outputLabel for="@next" value="Add Funds to Balance" />
-							<p:commandButton value="Open"
-								onclick="PF('addFundsDialog').show()" style="margin-left:1rem"/>
-						</p:panel>
-						
-						<p:panel header="Remove Funds">
-							<p:outputLabel for="@next" value="Remove Funds from Balance" />
-							<p:commandButton value="Open"
-								disabled = "#{balanceBean.currentBalance == null ? true : false}"
-								onclick="PF('removeFundsDialog').show()" style="margin-left:1rem"/>
-						</p:panel>
-						 <p:selectOneButton value="#{barChartProductSales.selectedType}" >
-						 <p:ajax event="change"  update="form"/>
-				            <f:selectItem itemLabel="Quarterly Sales" itemValue="quarter"/>
-				            <f:selectItem itemLabel="Monthly Sales" itemValue="monthly"/>
-       					 </p:selectOneButton>
-						<p:barChart id="barChart"
-						 model="#{barChartProductSales.getBarModel(barChartProductSales.selectedType, 2023)}" style=" height: 300px;"/>
-						 <p:donutChart model="#{donutChartExpenseProfit.getDonutModel('profit/expense', 2024)}" style="width: 50%; height: 250px;"/>
-						
+			<h:form id="form">
+				<p:growl id="messages" showDetail="true" />
+
+				<p:panel header="Financial Summary" id="financial-summary">
+					<p:panel header="Balance Statistics">
+						<div class="field">
+							<i class="pi pi-money-bill icon"></i>
+							<p:outputLabel id="balanceAmount"
+								value="Balance: $#{balanceBean.currentBalance != null ? balanceBean.currentBalance.balanceAmount : 'N/A'}" />
+						</div>
+						<div class="field">
+							<i class="pi pi-calendar icon"></i>
+							<p:outputLabel id="lastUpdated"
+								value="Last Update: #{balanceBean.currentBalance != null ? balanceBean.getLastUpdateDate() : 'N/A'}" />
+						</div>
 					</p:panel>
-					
-        <p:panel header="Transaction History">
-            <p:dataTable var="balance" value="#{balanceBean.balanceList}" paginator="true" paginatorPosition="bottom" id="balanceTable" rows="5">
-               
-                <p:column headerText="ID">
-                   	<h:outputText value="#{balance.id}"/>
-                </p:column>
-                <p:column headerText="Amount">
-                   	<h:outputText value="#{balance.balanceAmount}"/>
-                </p:column>
-                
-                <p:column headerText="Type">
-                   	<h:outputText value="#{balance.transactionType}"/>
-                </p:column>
-                
-                <p:column headerText="Date">
-                   	<h:outputText value="#{balanceBean.getDateAsString(balance.createdAt)}"/>
-                </p:column>
-            </p:dataTable>
-        </p:panel> 
-				</h:form>
 
-				<h:form id="add-funds-form">
+					<p:panel header="Add Funds">
+						<p:outputLabel for="@next" value="Add Funds to Balance" />
+						<p:commandButton value="Open"
+							onclick="PF('addFundsDialog').show()" style="margin-left:1rem" />
+					</p:panel>
+
+					<p:panel header="Remove Funds">
+						<p:outputLabel for="@next" value="Remove Funds from Balance" />
+						<p:commandButton value="Open"
+							disabled="#{balanceBean.currentBalance == null ? true : false}"
+							onclick="PF('removeFundsDialog').show()" style="margin-left:1rem" />
+					</p:panel>
+				
+					<div class="card">
+					<p:lineChart
+							model="#{lineChartBalance.getModel()}"
+							style="width: 80%; height: 300px;" />
+					</div>
+				
+				</p:panel>
+
+				<p:panel header="Transaction History">
+					<p:dataTable var="balance" value="#{balanceBean.balanceList}"
+						paginator="true" paginatorPosition="bottom" id="balanceTable"
+						rows="5">
+
+						<p:column headerText="ID">
+							<h:outputText value="#{balance.id}" />
+						</p:column>
+						<p:column headerText="Amount">
+							<h:outputText value="#{balance.balanceAmount}" />
+						</p:column>
+
+						<p:column headerText="Type">
+							<h:outputText value="#{balance.transactionType}" />
+						</p:column>
+
+						<p:column headerText="Date">
+							<h:outputText
+								value="#{balanceBean.getDateAsString(balance.createdAt)}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:form>
+
+			<h:form id="add-funds-form">
 				<p:growl showDetail="true" />
-					<p:dialog showEffect="fade" modal="true" widgetVar="addFundsDialog"
-						responsive="true">
-						<f:facet name="header">
+				<p:dialog showEffect="fade" modal="true" widgetVar="addFundsDialog"
+					responsive="true">
+					<f:facet name="header">
 						Add funds
                 </f:facet>
-						<!-- DIALOG PANEL -->
-						<p:outputPanel id="add-funds-panel" class="ui-fluid"
-							style="display: flex; flex-direction: column; gap: 15px;">
+					<!-- DIALOG PANEL -->
+					<p:outputPanel id="add-funds-panel" class="ui-fluid"
+						style="display: flex; flex-direction: column; gap: 15px;">
 
-							<div class="field">
-								<p:outputLabel value="Funds to Add: " for="@next" />
-								<p:spinner id="prefix" value="#{balanceBean.fundsToAdd}"
-									prefix="$" min="0" />
-							</div>
-						</p:outputPanel>
+						<div class="field">
+							<p:outputLabel value="Funds to Add: " for="@next" />
+							<p:spinner id="prefix" value="#{balanceBean.fundsToAdd}"
+								prefix="$" min="0" />
+						</div>
+					</p:outputPanel>
 
 
-						<f:facet name="footer">
-							<p:commandButton value="Add" icon="pi pi-check"
-							   action="#{balanceBean.addFunds}"
-							   update=":form add-funds-form remove-funds-form"
-							   class="ui-button-success"
-							/>
-							<p:commandButton value="Reset"
-								process="@this" styleClass="mr-2 ui-button-outlined"
+					<f:facet name="footer">
+						<p:commandButton value="Add" icon="pi pi-check"
+							action="#{balanceBean.addFunds}"
+							update=":form add-funds-form remove-funds-form"
+							class="ui-button-success" />
+						<p:commandButton value="Reset" process="@this"
+							styleClass="mr-2 ui-button-outlined"
 							oncomplete="updateBalancePage()">
-								
-								<p:resetInput target="add-funds-panel" />
-							</p:commandButton>
-							<p:commandButton value="Cancel" icon="pi pi-times"
-								 class="ui-button-secondary"
-								type="button" />
-						</f:facet>
-						
-					</p:dialog>
-				</h:form>
-				
-			
-				<h:form id="remove-funds-form">
+
+							<p:resetInput target="add-funds-panel" />
+						</p:commandButton>
+						<p:commandButton value="Cancel" icon="pi pi-times"
+							class="ui-button-secondary" type="button" />
+					</f:facet>
+
+				</p:dialog>
+			</h:form>
+
+
+			<h:form id="remove-funds-form">
 				<p:growl showDetail="true" />
-					<p:dialog showEffect="fade" modal="true" widgetVar="removeFundsDialog"
-						responsive="true">
-						<f:facet name="header">
+				<p:dialog showEffect="fade" modal="true"
+					widgetVar="removeFundsDialog" responsive="true">
+					<f:facet name="header">
 							Remove Funds
              		    </f:facet>
-						<!-- DIALOG PANEL -->
-						<p:outputPanel id="remove-funds-panel" class="ui-fluid"
-							style="display: flex; flex-direction: column; gap: 15px;">
+					<!-- DIALOG PANEL -->
+					<p:outputPanel id="remove-funds-panel" class="ui-fluid"
+						style="display: flex; flex-direction: column; gap: 15px;">
 
-							<div class="field">
-								<p:outputLabel value="Funds to Remove: " for="@next" />
-								<p:spinner id="prefix" value="#{balanceBean.fundsToRemove}"
-									prefix="$" min="0" />
-							</div>
+						<div class="field">
+							<p:outputLabel value="Funds to Remove: " for="@next" />
+							<p:spinner id="prefix" value="#{balanceBean.fundsToRemove}"
+								prefix="$" min="0" />
+						</div>
 
-						</p:outputPanel>
+					</p:outputPanel>
 
 
-						<f:facet name="footer">
-							<p:commandButton value="Remove" icon="pi pi-check"
-								action="#{balanceBean.removeFunds}"
-								class="ui-button-danger"
-								
-									oncomplete="updateBalancePage()"
-								/>
+					<f:facet name="footer">
+						<p:commandButton value="Remove" icon="pi pi-check"
+							action="#{balanceBean.removeFunds}" class="ui-button-danger"
+							oncomplete="updateBalancePage()" />
 
-							<p:commandButton value="Reset" 
-								process="@this" styleClass="mr-2 ui-button-outlined" oncomplete="updateBalancePage()">
-								<p:resetInput target="remove-funds-panel" />
-							</p:commandButton>
-							<p:commandButton value="Cancel" icon="pi pi-times"
-								 class="ui-button-secondary"
-								type="button" />
-						</f:facet>
-					</p:dialog>
-				</h:form>
-			
+						<p:commandButton value="Reset" process="@this"
+							styleClass="mr-2 ui-button-outlined"
+							oncomplete="updateBalancePage()">
+							<p:resetInput target="remove-funds-panel" />
+						</p:commandButton>
+						<p:commandButton value="Cancel" icon="pi pi-times"
+							class="ui-button-secondary" type="button" />
+					</f:facet>
+				</p:dialog>
+			</h:form>
+
 		</ui:define>
 	</ui:composition>
 </f:view>

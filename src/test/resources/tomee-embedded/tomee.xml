@@ -1,0 +1,13 @@
+<tomee>
+  
+    <Resource id="ArquillianEmbeddedDerbyPool"  type="javax.sql.DataSource">
+
+
+        JdbcDriver com.mysql.jdbc.Driver
+        JdbcUrl jdbc:mysql://localhost/test_manager
+        UserName admin
+        Password password
+
+        
+    </Resource>
+</tomee>

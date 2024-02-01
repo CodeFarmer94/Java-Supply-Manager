@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arquillian >
+    <container qualifier="tomee-embedded" default="true">
+        <configuration>
+            <property name="resourcesXml">src/test/resources/tomee-embedded/tomee.xml</property>
+        </configuration>
+    </container>
+</arquillian>

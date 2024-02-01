@@ -4,12 +4,11 @@ import java.io.Serializable;
 import java.util.function.Function;
 
 import com.interfaces.SerializableFunction;
-import com.services.MonthlySalesCalculatorService;
-import com.services.QuarterSalesCalculatorService;
-import com.services.YearPurchasesSalesCalculatorService;
+import com.services.MonthlyInvoiceCalculatorService;
+
+import com.services.QuarterInvoiceCalculatorService;
+import com.services.YearTotalInvoiceCalculatorService;
 import com.interfaces.InvoiceCalculatorService;
-
-
 
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Named;
@@ -23,11 +22,11 @@ public class SalesCalculatorStrategyProducer implements Serializable {
 	SerializableFunction<String, InvoiceCalculatorService> salesCalculatorStrategyProducer = (String strategy) -> {
 		switch (strategy) {
 		case "monthly":
-			return new MonthlySalesCalculatorService();
+			return new MonthlyInvoiceCalculatorService();
 		case "quarter":
-			return new QuarterSalesCalculatorService();
+			return new QuarterInvoiceCalculatorService();
 		case "profit/expense":
-			return new YearPurchasesSalesCalculatorService();
+			return new YearTotalInvoiceCalculatorService();
 		default:
 			throw new IllegalArgumentException("Invalid strategy: " + strategy);
 		}
