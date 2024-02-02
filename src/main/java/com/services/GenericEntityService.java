@@ -1,13 +1,13 @@
 package com.services;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.logging.Logger;
+
 import java.util.stream.Collectors;
 
 import com.dao.GenericDAO;
 import com.interfaces.EntityInterface;
-import com.interfaces.GenericEntityServiceInterface;
+
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;

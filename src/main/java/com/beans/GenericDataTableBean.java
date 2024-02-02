@@ -128,11 +128,9 @@ public abstract class  GenericDataTableBean<T extends EntityInterface> implement
 
 	        // Update the supplierList after deletion
 	        this.entityList = entityService.findAll(entityClass);
-	        PrimeFaces.current().ajax().update("form:datatable");
-	        PrimeFaces.current().ajax().update("form:delete-button");
+	       
 	        
-	        FacesContext.getCurrentInstance().addMessage(null,
-	                new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", entityClass.getSimpleName()+ " Deleted"));
+	      
 	    } catch (EntityNotFoundException e) {
 	        logger.warning(e.getMessage());
 	    } catch (PersistenceException e) {
@@ -172,7 +170,7 @@ public abstract class  GenericDataTableBean<T extends EntityInterface> implement
             logger.warning("Number of items after filtering: " + String.valueOf(entityList.size()));
         }
 
-        PrimeFaces.current().ajax().update("form:datatable");
+     
     }
 
    
